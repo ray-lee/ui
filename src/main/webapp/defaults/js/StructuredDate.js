@@ -427,14 +427,16 @@ cspace = cspace || {};
         return {
             dateEarliestSingleQualifier: {
                 optionnames: [
-                    "+/-",
+                    " ",
+                    "±",
                     "+",
                     "-"
                 ],
                 optionlist: [
-                    "+/-",
-                    "+",
-                    "-"
+                    "none",
+                    "plusMinus",
+                    "plus",
+                    "minus"
                 ],
                 selection: that.resolveFullElPath("dateEarliestSingleQualifier")
             },
@@ -442,90 +444,116 @@ cspace = cspace || {};
             dateLatestYear: that.resolveFullElPath("dateLatestYear"),
             dateAssociation: that.resolveFullElPath("dateAssociation"),
             dateEarliestSingleEra: {
-                decorators: [{
-                    func: "cspace.termList",
-                    type: "fluid",
-                    options: {
-                        elPath: that.composeElPath("dateEarliestSingleEra"),
-                        termListType: "dateEarliestSingleEra",
-                        recordType: "structureddate"
-                    }
-                }]
+                optionnames: [
+                    "AD/CE",
+                    "BC/BCE",
+                    "BP",
+                    " "
+                ],
+                optionlist: [
+                    "ce",
+                    "bce",
+                    "bp",
+                    "none"
+                ],
+                selection: that.resolveFullElPath("dateEarliestSingleEra")
             },
             dateDisplayDate: that.resolveFullElPath("dateDisplayDate"),
             dateEarliestSingleCertainty: {
-                decorators: [{
-                    func: "cspace.termList",
-                    type: "fluid",
-                    options: {
-                        elPath: that.composeElPath("dateEarliestSingleCertainty"),
-                        termListType: "dateEarliestSingleCertainty",
-                        recordType: "structureddate"
-                    }
-                }]
+                optionnames: [
+                    " ",
+                    "circa",
+                    "exactly",
+                    "at least",
+                    "less than"
+                ],
+                optionlist: [
+                    "none",
+                    "circa",
+                    "exactly",
+                    "atLeast",
+                    "lessThan"
+                ],
+                selection: that.resolveFullElPath("dateEarliestSingleCertainty")
             },
             dateLatestEra: {
-                decorators: [{
-                    func: "cspace.termList",
-                    type: "fluid",
-                    options: {
-                        elPath: that.composeElPath("dateLatestEra"),
-                        termListType: "dateLatestEra",
-                        recordType: "structureddate"
-                    }
-                }]
+                optionnames: [
+                    "AD/CE",
+                    "BC/BCE",
+                    "BP",
+                    " "
+                ],
+                optionlist: [
+                    "ce",
+                    "bce",
+                    "bp",
+                    "none"
+                ],
+                selection: that.resolveFullElPath("dateLatestEra")
             },
             dateEarliestSingleQualifierValue: that.resolveFullElPath("dateEarliestSingleQualifierValue"),
             dateLatestCertainty: {
-                decorators: [{
-                    func: "cspace.termList",
-                    type: "fluid",
-                    options: {
-                        elPath: that.composeElPath("dateLatestCertainty"),
-                        termListType: "dateLatestCertainty",
-                        recordType: "structureddate"
-                    }
-                }]
+                optionnames: [
+                    " ",
+                    "circa",
+                    "exactly",
+                    "at least",
+                    "less than"
+                ],
+                optionlist: [
+                    "none",
+                    "circa",
+                    "exactly",
+                    "atLeast",
+                    "lessThan"
+                ],
+                selection: that.resolveFullElPath("dateLatestCertainty")
             },
             dateEarliestSingleYear: that.resolveFullElPath("dateEarliestSingleYear"),
             dateLatestQualifier: {
                 optionnames: [
-                    "+/-",
+                    " ",
+                    "±",
                     "+",
                     "-"
                 ],
                 optionlist: [
-                    "+/-",
-                    "+",
-                    "-"
+                    "none",
+                    "plusMinus",
+                    "plus",
+                    "minus"
                 ],
                 selection: that.resolveFullElPath("dateLatestQualifier")
             },
             dateLatestQualifierValue: that.resolveFullElPath("dateLatestQualifierValue"),
             dateEarliestSingleQualifierUnit: {
-                decorators: [{
-                    func: "cspace.termList",
-                    type: "fluid",
-                    options: {
-                        elPath: that.composeElPath("dateEarliestSingleQualifierUnit"),
-                        termListType: "dateEarliestSingleQualifierUnit",
-                        recordType: "structureddate"
-                    }
-                }]
+                optionnames: [
+                    "year(s)",
+                    "month(s)",
+                    "day(s)"
+                ],
+                optionlist: [
+                    "years",
+                    "month",
+                    "days"
+                ],
+                selection: that.resolveFullElPath("dateEarliestSingleQualifierUnit")
             },
             datePeriod: that.resolveFullElPath("datePeriod"),
             dateLatestMonth: that.resolveFullElPath("dateLatestMonth"),
             dateNote: that.resolveFullElPath("dateNote"),
             dateLatestQualifierUnit: {
-                decorators: [{
-                    func: "cspace.termList",
-                    type: "fluid",
-                    options: {
-                        elPath: that.composeElPath("dateLatestQualifierUnit"),
-                        termListType: "dateLatestQualifierUnit",
-                        recordType: "structureddate"
-                    }
-                }]
+                optionnames: [
+                    "year(s)",
+                    "month(s)",
+                    "day(s)"
+                ],
+                optionlist: [
+                    "years",
+                    "month",
+                    "days"
+                ],
+                selection: that.resolveFullElPath("dateLatestQualifierUnit")
             },
             dateEarliestSingleDay: that.resolveFullElPath("dateEarliestSingleDay"),
             dateEarliestSingleMonth: that.resolveFullElPath("dateEarliestSingleMonth"),

@@ -41,7 +41,7 @@
 							<div class="header">
 								<div class="label csc-acquisition-acquisitionAuthorizerHeader-label"></div>
 							</div>
-							<div class="content">
+							<div class="content pahmaCustomColumnWidth">
 								<table>
 									<thead>
 										<tr>
@@ -54,8 +54,8 @@
 											<td>
 												<input type="text" class="csc-acquisition-acquisitionAuthorizer" />
 											</td>
-											<td>
-												<input type="text" class="csc-acquisition-acquisitionAuthorizerDate" />
+											<td class="caldatefield">
+												<input type="text" class="csc-acquisition-acquisitionAuthorizerDate caldatefield" />
 											</td>
 										</tr>
 									</tbody>
@@ -130,11 +130,11 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr>
+										<!-- <tr>
 											<td class="label csc-acquisition-objectPurchasePriceValue-label"></td>
 											<td><select class="csc-acquisition-group-purchase-price-currency input-select input-money-type"><option value="">Options not loaded</option></select></td>
 											<td><input type="text" class="input-numeric-medium csc-acquisition-group-purchase-price-value" value="" /></td>
-										</tr>
+										</tr> -->
 										<tr>
 											<td class="label csc-acquisition-objectOfferPriceValue-label"></td>
 											<td><select class="csc-acquisition-object-offer-price-currency input-select input-money-type"><option value="">Options not loaded</option></select></td>
@@ -168,7 +168,7 @@
 								<textarea rows="4" cols="30" class="input-textarea csc-acquisition-acquisition-reason"/>
 							</div>
 						</div>
-
+						
 						<div class="info-pair">
 							<div class="header">
 								<div class="label csc-acquisition-acquisitionNote-label"></div>
@@ -184,6 +184,15 @@
 							</div>
 							<div class="content">
 								<textarea rows="4" cols="30" class="input-textarea csc-acquisition-acquisition-provisos" />
+							</div>
+						</div>
+
+						<div class="info-pair">
+							<div class="header">
+								<div class="label csc-acquisition-acquisitionDescription-label"></div>
+							</div>
+							<div class="content">								
+								<textarea rows="4" cols="30" class="input-textarea csc-acquisition-acquisitionDescription"/>
 							</div>
 						</div>
 					</div>

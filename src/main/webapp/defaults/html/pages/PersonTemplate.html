@@ -142,14 +142,23 @@
 								<textarea rows="4" cols="30" class="input-textarea csc-personAuthority-bioNote" />
 							</div>
 						</div>
+						
+						<div class="info-pair"> <!-- Alt names -->
+							<div class="header">
+								<div class="csc-person-altNameNotes-label label"></div>
+							</div>
+							<div class="content">
+								<input type="text" class="csc-personAuthority-altNameNote" />
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div> <!-- information-group -->		
 			
 		<div class="fl-container-flex fl-fix information-group">
-			<div class="csc-person-contactInformation-label csc-recordEditor-header fl-container-flex header toggle"></div>
-			<div class="csc-recordEditor-togglable fl-container-flex fl-fix content main">
+			<div class="csc-person-contactInformation-label csc-recordEditor-header fl-container-flex header toggle cs-togglable-collapsed"></div>
+			<div class="csc-recordEditor-togglable fl-container-flex fl-fix content main" style="display:none">
 			    <div class="info-column">
 					<div class="info-column2-50 fl-force-left">
 						<div class="info-pair">
@@ -318,6 +327,17 @@
 									</div>
 								</div>
 							</div>
+						</div>
+					</div>
+				</div>
+
+			    <div class="info-column">
+				    <div class="info-pair">
+						<div class="header">
+							<div class="csc-contact-addressNote-label label"></div>
+						</div>
+						<div class="content">
+							<textarea rows="4" cols="30" class="input-textarea csc-contact-addressNote" ></textarea>
 						</div>
 					</div>
 				</div>

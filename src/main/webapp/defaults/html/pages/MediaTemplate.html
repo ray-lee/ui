@@ -19,6 +19,41 @@
 		<div class="fl-container-flex fl-fix information-group info-column">
 			<div class="csc-recordEditor-header fl-container-flex header toggle csc-media-fileInformationHeader-label"></div>
 			<div class="csc-recordEditor-togglable fl-container-flex fl-fix content main">
+			    <div class="info-column">					
+					<div class="info-column2-50 fl-force-left">
+						<div class="info-pair">
+							<div class="header">
+								<span class="label required csc-media-identificationNumber-label"></span>
+							</div>
+							<div class="content csc-media-identificationNumber-container clearfix">
+								<input type="text" class="csc-media-identificationNumber" />
+							</div>
+						</div>
+					</div>
+					
+					<div class="info-column2-25 fl-force-right">
+    					<div class="info-pair">
+    						<div class="header">
+    							<div class="label"><label for=".csc-media-approvedForWeb" class="csc-media-approvedForWeb-label"/></div>
+    						</div>
+    						<div class="content">
+    							<input class="input-select csc-media-approvedForWeb" type="checkbox"/>
+    						</div>
+    					</div>
+    				</div>
+				</div>
+				
+				<div class="info-column fl-force-left">   
+					<div class="info-pair">
+						<div class="header">
+							<div class="label csc-media-description-label"></div>
+						</div>
+						<div class="content">
+							<textarea rows="4" cols="30" class="input-textarea csc-media-description" ></textarea>
+						</div>
+					</div>
+				</div>
+								
 				<div class="info-column">
 					<div class="info-pair">
 						<div class="content">
@@ -59,6 +94,7 @@
 					</div>
 					
 					<div class="csc-blobs-dimension"></div>
+					
 				</div>
 			</div>
 		</div>
@@ -67,29 +103,6 @@
 			<div class="csc-recordEditor-header fl-container-flex header toggle csc-media-mediaInformation-label"></div>
 			<div class="csc-recordEditor-togglable fl-container-flex fl-fix content main"> 
 				<div class="info-column">
-					<div class="info-column">
-						<div class="info-column2-50 fl-force-left" >    
-							<div class="info-pair">
-								<div class="header">
-									<div class="label csc-media-title-label"></div>
-								</div>
-								<div class="content">
-									<input type="text" class="csc-media-title" />
-								</div>
-							</div>
-						</div>
-						
-						<div class="info-column2-50 fl-force-right">
-							<div class="info-pair">
-								<div class="header">
-									<span class="label required csc-media-identificationNumber-label"></span><span class="required">*</span>
-								</div>
-								<div class="content csc-media-identificationNumber-container clearfix">
-									<input type="text" class="input-numeric-long csc-media-identificationNumber pattern-chooser-input" />
-								</div>
-							</div>
-						</div>
-					</div>
 					
 					<div class="csc-media-dimension"></div>
 					
@@ -105,13 +118,26 @@
 							</div>
 						</div>
 						
-						<div class="info-column2-50 fl-force-right">
-							<div class="info-pair-select">
-								<div class="header">
-									<div class="label csc-media-types-label"></div>
+						<div class="info-column2-50 fl-force-right" >
+							<div class="info-column2-50 fl-force-left" >    
+								<div class="narrow info-pair-select">
+									<div class="header">
+										<div class="label csc-media-language-label"></div>
+									</div>
+									<div class="content">
+										<select class="csc-media-language input-select"><option value="">Options not loaded</option></select>
+									</div>
 								</div>
-								<div class="content">
-									<select class="csc-media-type input-select"><option value="">Options not loaded</option></select>
+							</div>
+						
+							<div class="info-column2-50 fl-force-right">
+								<div class="narrow info-pair-select">
+									<div class="header">
+										<div class="label csc-media-types-label"></div>
+									</div>
+									<div class="content">
+										<select class="csc-media-type input-select"><option value="">Options not loaded</option></select>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -142,13 +168,14 @@
 					</div>
 					
 					<div class="info-column">
-						<div class="info-column2-50 fl-force-left" >    
-							<div class="info-pair-select">
+
+						<div class="info-column2-50 fl-force-left">
+        					<div class="info-pair">
 								<div class="header">
-									<div class="label csc-media-language-label"></div>
+									<div class="label"><label for=".csc-media-primaryDisplay" class="csc-media-primaryDisplay-label"/></div>
 								</div>
 								<div class="content">
-									<select class="csc-media-language input-select"><option value="">Options not loaded</option></select>
+									<input class="csc-media-primaryDisplay" type="checkbox"/>
 								</div>
 							</div>
 						</div>
@@ -233,17 +260,6 @@
 								<div class="content">
 									<input type="text" class="csc-media-rightsHolder" />
 								</div>
-							</div>
-						</div>
-					</div>
-					
-					<div class="info-column fl-force-left">   
-						<div class="info-pair">
-							<div class="header">
-								<div class="label csc-media-description-label"></div>
-							</div>
-							<div class="content">
-								<textarea rows="4" cols="30" class="input-textarea csc-media-description" ></textarea>
 							</div>
 						</div>
 					</div>

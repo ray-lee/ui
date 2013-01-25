@@ -22,13 +22,9 @@
                     "type": "cspace.titleBar",
                     "options": {
                         "fields": [
-                            "fields.objectNumber", {
-                            "type": "repeatableMatch",
-                            "queryPath": "fields.titleGroup",
-                            "childPath": "_primary",
-                            "value": true,
-                            "path": "title"
-                        }]
+                            "fields.objectNumber", 
+                            "fields.nametitle"
+                        ]
                     }
                 },
                 "header": {
