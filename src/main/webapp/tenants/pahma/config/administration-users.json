@@ -1,0 +1,76 @@
+{
+    "pageBuilder": {
+        "options": {
+            "pageType": "users",
+            "selectors": {
+                "admin": ".csc-admin-users"
+            },
+            "components": {
+                "admin": {
+                    "type": "cspace.admin",
+                    "options": {
+                        "produceTree": "cspace.admin.produceAdminUserTree",
+                        "selectors": {
+                            "searchField": ".csc-user-searchField",
+                            "searchNote": ".csc-users-searchNote",
+                            "searchButton": ".csc-user-searchButton",
+                            "unSearchButton": ".csc-user-unSearchButton",
+                            "password": ".csc-user-password",
+                            "passwordConfirm": ".csc-user-passwordConfirm",
+                            "status": ".csc-user-status",
+                            "statusLabel": ".csc-users-status-label"
+                        },
+                        "selectorsToIgnore": ["recordEditor", "listView", "banner", "password", "passwordConfirm", "status", "statusLabel"],
+                        "invokers": {
+                            "search": "cspace.admin.search",
+                            "unSearch": "cspace.admin.unSearch",
+                            "validate": "cspace.admin.validate"
+                        },
+                        "events": {
+                            "onSearch": null,
+                            "onUnSearch": null,
+                            "afterSearch": null,
+                            "afterUnSearch": null
+                        },
+                        "preInitFunction": "cspace.admin.preInitUserAdmin",
+                        "userId": "{userLogin}.options.userId",
+                        "components": {
+                            "passwordValidator": {
+                                "type": "cspace.passwordValidator"
+                            },
+                            "adminRecordEditor": {
+                                "options": {
+                                    "uispec": "{pageBuilder}.options.uispec.details",
+                                    "showDeleteButton": {
+                                        "expander": {
+                                            "type": "fluid.deferredInvokeCall",
+                                            "func": "cspace.admin.isCurrentUser",
+                                            "args": ["{userLogin}.options.csid", "{admin}.selectedRecordCsid"]
+                                        }
+                                    },
+                                    "listeners": {
+                                        "onSave": {
+                                            "listener": "{admin}.onSave",
+                                            "priority": "first"
+                                        },
+                                        "afterRecordRender": {
+                                            "listener": "{admin}.processStatus"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "pageBuilderIO": {
+        "options": {
+            "schema": {
+                "users": null
+            },
+            "recordType": "users"
+        }
+    }
+}

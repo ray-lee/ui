@@ -1,0 +1,33 @@
+{
+    "pageBuilder": {
+        "options": {
+            "pageType": "role",
+            "selectors": {
+                "admin": ".csc-admin-role"
+            },
+            "components": {
+                "admin": {
+                    "type": "cspace.admin",
+                    "options": {
+                        "components": {
+                            "adminRecordEditor": {
+                                "options": {
+                                    "uispec": "{pageBuilder}.options.uispec.details",
+                                    "showDeleteButton": true
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "pageBuilderIO": {
+        "options": {
+            "schema": {
+                "role": null
+            },
+            "recordType": "role"
+        }
+    }
+}

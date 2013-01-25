@@ -1,0 +1,43 @@
+{
+    "pageBuilderIO": {
+        "options": {
+            "recordType": "movement",
+            "schema": {
+                "movement": null
+            }
+        }
+    },
+    "pageBuilder": {
+        "options": {
+            "pageType": "movement-tab",
+            "selectors": {
+                "relatedRecordsTab": ".csc-relatedRecordsTab-movement"
+            },
+            "components": {
+                "relatedRecordsTab": {
+                    "type": "cspace.relatedRecordsTab",
+                    "options": {
+                        "primary": "{pageBuilder}.options.primary",
+                        "related": "{pageBuilder}.options.related",
+                        "csid": "{globalModel}.model.primaryModel.csid",
+                        "strings": {
+                            "editRecord": "movement-editRecord",
+                            "recordList": "movement-recordList"
+                        },
+                        "components": {
+                            "relatedRecordsRecordEditor": {
+                                "options": {
+                                    "selectors": {
+                                        "identificationNumber": ".csc-movement-currentLocation",
+                                        "recordLockContainer": ".csc-recordLock"
+                                    },
+                                    "uispec": "{pageBuilder}.options.uispec.details"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,42 @@
+{
+    "pageBuilderIO": {
+        "options": {
+            "recordType": "intake",
+            "schema": {
+                "intake": null
+            }
+        }
+    },
+    "pageBuilder": {
+        "options": {
+            "pageType": "intake-tab",
+            "selectors": {
+                "relatedRecordsTab": ".csc-relatedRecordsTab-intake"
+            },
+            "components": {
+                "relatedRecordsTab": {
+                    "type": "cspace.relatedRecordsTab",
+                    "options": {
+                        "primary": "{pageBuilder}.options.primary",
+                        "related": "{pageBuilder}.options.related",
+                        "csid": "{globalModel}.model.primaryModel.csid",
+                        "strings": {
+                            "editRecord": "intake-editRecord",
+                            "recordList": "intake-recordList"
+                        },
+                        "components": {
+                            "relatedRecordsRecordEditor": {
+                                "options": {
+                                    "selectors": {
+                                        "identificationNumber": ".csc-intake-entry-number"
+                                    },
+                                    "uispec": "{pageBuilder}.options.uispec.details"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

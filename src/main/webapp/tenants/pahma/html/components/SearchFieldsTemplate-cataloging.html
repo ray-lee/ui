@@ -225,6 +225,7 @@
                     </div>
                 </div>
                 <div class="info-pair">
+<<<<<<< HEAD
                     <div class="header">
                         <div class="label csc-collection-object-objectComponentName-label"></div>
                     </div>
@@ -234,6 +235,8 @@
                 </div>
                 <!-- FIXME: Can unhide by removing style after CSPACE-5185 (and hence CSPACE-4903 / CSPACE-5184) is fixed -->
                 <div class="info-pair" style="display:none;">
+=======
+>>>>>>> ucb-deploy_3.2
                     <div class="header">
                         <div class="label csc-collection-object-inscriptionDescriptionInscriber-label"></div>
                     </div>
@@ -241,8 +244,7 @@
                         <input type="text" class="csc-object-description-inscription-description-inscriber"/>
                     </div>
                 </div>
-                <!-- FIXME: Can unhide by removing style after CSPACE-5185 (and hence CSPACE-4903 / CSPACE-5184) is fixed -->
-                <div class="info-pair" style="display:none;">
+                <div class="info-pair">
                     <div class="header">
                         <div class="label csc-collection-object-inscriptionDescriptionMethod-label"></div>
                     </div>
@@ -306,8 +308,26 @@
                         <!-- FIXME: App layer isn't providing labels of the groups in the uispec, so hardcode them for now -->
                         <div class="label">Production person / <span class="csc-collection-object-objectProductionPerson-label"/></div>
                     </div>
+<<<<<<< HEAD
                     <div class="content clearfix csc-collection-object-objectProductionPersonGroup">
                         <input type="text" class="csc-object-production-person"/>
+=======
+                    <div class="content">
+                        <table>
+                            <thead>
+                            <tr>
+                                <td class="csc-collection-object-objectProductionDateStart-label"></td>
+                                <td class="csc-collection-object-objectProductionDateEnd-label"></td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><input type="text" class="csc-collection-object-objectProductionDateStart" /></td>
+                                <td><input type="text" class="csc-collection-object-objectProductionDateEnd" /></td>
+                            </tr>
+                            </tbody>
+                        </table>
+>>>>>>> ucb-deploy_3.2
                     </div>
                 </div>
                 <div class="info-pair">
@@ -364,12 +384,12 @@
                         <input type="text" class="csc-collection-object-assocPlace"/>
                     </div>
                 </div>
-                <div class="info-pair" style="display:none;">
+                <div class="info-pair">
                     <div class="header">
-                        <div class="label csc-collection-object-editUsername-label"></div>
+                        <div class="label csc-collection-object-updatedBy-label"></div>
                     </div>
                     <div class="content clearfix">
-                        <input type="text" class="csc-collection-object-editUsername"/>
+                        <input type="text" class="csc-collection-object-updatedBy"/>
                     </div>
                 </div>
                 <div class="info-pair">
@@ -413,7 +433,28 @@
                             </tbody>
                         </table>
                     </div>
-                </div>                                                     
+                </div>
+                <div class="info-pair" style="display:none;">>
+                    <div class="header">
+                        <div class="label csc-collection-object-numberOfObjects-label"></div>
+                    </div>
+                    <div class="content">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td class="csc-collection-object-numberOfObjectsStart-label"></td>
+                                    <td class="csc-collection-object-numberOfObjectsEnd-label"></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" class="csc-collection-object-numberOfObjectsStart" /></td>
+                                    <td><input type="text" class="csc-collection-object-numberOfObjectsEnd" /></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>                
             </div>
         </div>
     </div>

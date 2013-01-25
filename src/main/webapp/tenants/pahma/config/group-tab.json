@@ -1,0 +1,42 @@
+{
+    "pageBuilderIO": {
+        "options": {
+            "recordType": "group",
+            "schema": {
+                "group": null
+            }
+        }
+    },
+    "pageBuilder": {
+        "options": {
+            "pageType": "group-tab",
+            "selectors": {
+                "relatedRecordsTab": ".csc-relatedRecordsTab-group"
+            },
+            "components": {
+                "relatedRecordsTab": {
+                    "type": "cspace.relatedRecordsTab",
+                    "options": {
+                        "primary": "{pageBuilder}.options.primary",
+                        "related": "{pageBuilder}.options.related",
+                        "csid": "{globalModel}.model.primaryModel.csid",
+                        "strings": {
+                            "editRecord": "group-editRecord",
+                            "recordList": "group-recordList"
+                        },
+                        "components": {
+                            "relatedRecordsRecordEditor": {
+                                "options": {
+                                    "selectors": {
+                                        "identificationNumber": ".csc-group-title"
+                                    },
+                                    "uispec": "{pageBuilder}.options.uispec.details"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

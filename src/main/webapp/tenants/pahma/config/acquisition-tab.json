@@ -1,0 +1,42 @@
+{
+    "pageBuilderIO": {
+        "options": {
+            "recordType": "acquisition",
+            "schema": {
+                "acquisition": null
+            }
+        }
+    },
+    "pageBuilder": {
+        "options": {
+            "pageType": "acquisition-tab",
+            "selectors": {
+                "relatedRecordsTab": ".csc-relatedRecordsTab-acquisition"
+            },
+            "components": {
+                "relatedRecordsTab": {
+                    "type": "cspace.relatedRecordsTab",
+                    "options": {
+                        "primary": "{pageBuilder}.options.primary",
+                        "related": "{pageBuilder}.options.related",
+                        "csid": "{globalModel}.model.primaryModel.csid",
+                        "strings": {
+                            "editRecord": "acquisition-editRecord",
+                            "recordList": "acquisition-recordList"
+                        },
+                        "components": {
+                            "relatedRecordsRecordEditor": {
+                                "options": {
+                                    "selectors": {
+                                        "identificationNumber": ".csc-acquisition-numberPatternChooser-reference-number" 
+                                    },
+                                    "uispec": "{pageBuilder}.options.uispec.details"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
