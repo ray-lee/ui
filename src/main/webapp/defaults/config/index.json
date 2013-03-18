@@ -6,7 +6,12 @@
             },
             "components": {
                 "login": {
-                    "type": "cspace.login"
+                    "type": "cspace.login",
+                    "options": {
+                        "model": {
+                            "otherTenant": "../../lifesci/html/index.html"
+                        }
+                    } 
                 } 
             }
         }

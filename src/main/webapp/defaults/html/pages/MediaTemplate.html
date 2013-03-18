@@ -20,6 +20,67 @@
 			<div class="csc-recordEditor-header fl-container-flex header toggle csc-media-fileInformationHeader-label"></div>
 			<div class="csc-recordEditor-togglable fl-container-flex fl-fix content main">
 				<div class="info-column">
+					<div class="info-column2-50 fl-force-left">
+						<div class="info-pair">
+							<div class="header">
+								<div class="csc-media-identificationNumber-label label"/>
+							</div>
+							<div class="content csc-media-identificationNumber-container">
+								<input type="text" class="input-numeric-long csc-media-identificationNumber pattern-chooser-input"/>
+							</div>
+						</div>
+					</div>
+					<div class="info-column2-50 fl-force-right">
+						<div class="info-pair">
+							<div class="header">
+								<div class="csc-media-scientificTaxonomy-label label"/>
+							</div>
+							<div class="content">
+								<input type="text" class="csc-media-scientificTaxonomy"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="info-column">
+					<div class="info-pair">
+						<div class="header">
+							<div class="label csc-media-title-label"></div>
+						</div>
+						<div class="content">
+							<input type="text" class="csc-media-title"/>
+						</div>
+					</div>
+				</div>
+
+				<div class="info-column">
+					<div class="info-column2-50 fl-force-left">
+						<div class="info-pair">
+							<div class="header">
+								<div class="csc-media-handwritten-label label"/>
+							</div>
+							<div class="content">
+								<select class="csc-media-handwritten input-select">
+									<option value="">Options not loaded</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="info-column2-50 fl-force-right">
+						<div class="info-pair">
+							<div class="header">
+								<div class="csc-media-postToPublic-label label"/>
+							</div>
+							<div class="content">
+								<select class="csc-media-postToPublic input-select">
+									<option value="">Options not loaded</option>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="info-column">
 					<div class="info-pair">
 						<div class="content">
 							<div class="csc-media-upload"></div>
@@ -67,30 +128,6 @@
 			<div class="csc-recordEditor-header fl-container-flex header toggle csc-media-mediaInformation-label"></div>
 			<div class="csc-recordEditor-togglable fl-container-flex fl-fix content main"> 
 				<div class="info-column">
-					<div class="info-column">
-						<div class="info-column2-50 fl-force-left" >    
-							<div class="info-pair">
-								<div class="header">
-									<div class="label csc-media-title-label"></div>
-								</div>
-								<div class="content">
-									<input type="text" class="csc-media-title" />
-								</div>
-							</div>
-						</div>
-						
-						<div class="info-column2-50 fl-force-right">
-							<div class="info-pair">
-								<div class="header">
-									<span class="label required csc-media-identificationNumber-label"></span><span class="required">*</span>
-								</div>
-								<div class="content csc-media-identificationNumber-container clearfix">
-									<input type="text" class="input-numeric-long csc-media-identificationNumber pattern-chooser-input" />
-								</div>
-							</div>
-						</div>
-					</div>
-					
 					<div class="csc-media-dimension"></div>
 					
 					<div class="info-column">

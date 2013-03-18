@@ -136,7 +136,7 @@ https://source.collectionspace.org/collection-space/LICENSE.txt
                 }
             }
         });
-       
+        
         // List editor's demands
         fluid.demands("cspace.listEditor.listDataSource",  ["cspace.users", "cspace.localData", "cspace.listEditor"], {
             funcName: "cspace.listEditor.testListDataSource",
@@ -655,7 +655,7 @@ https://source.collectionspace.org/collection-space/LICENSE.txt
         fluid.demands("cspace.autocomplete.matchesDataSource", "cspace.autocomplete", {
             funcName: "cspace.URLDataSource", 
             args: {
-                url: "%queryUrl?q=%term%vocab",
+                url: "%queryUrl?pageSize=100&q=%term",
                 termMap: {
                     queryUrl: "{autocomplete}.options.queryUrl",
                     term: "encodeURIComponent:%term",
@@ -693,6 +693,7 @@ https://source.collectionspace.org/collection-space/LICENSE.txt
         fluid.demands("cspace.autocomplete", "cspace.recordEditor", {
             container: "{arguments}.0",
             mergeAllOptions: [{
+                delay: 2000,
                 model: {
                     vocab: {
                         expander: {
@@ -942,7 +943,7 @@ https://source.collectionspace.org/collection-space/LICENSE.txt
                 recordApplier: "{pageBuilder}.applier"
             }
         });
-        
+
         fluid.demands("cspace.reportProducer.reportTypesSource", "cspace.reportProducer", {
             funcName: "cspace.URLDataSource",
             args: {
@@ -952,6 +953,11 @@ https://source.collectionspace.org/collection-space/LICENSE.txt
                     recordType: "%recordType"
                 }
             }
+        });
+        
+        fluid.demands("cspace.reportProducer.generateReport", ["cspace.reportProducer", "cspace.recordEditor"], {
+            funcName: "cspace.reportProducer.generateReport",
+            args: ["{reportProducer}.confirmation", "{reportProducer}.options.parentBundle", "{reportProducer}.requestReport", "{recordEditor}"]
         });
 
         // Batch runner  
@@ -964,8 +970,7 @@ https://source.collectionspace.org/collection-space/LICENSE.txt
                 listeners: {
                     onSynchronousFetch: "{loadingIndicator}.events.showOn.fire",
                     onError: "{loadingIndicator}.events.hideOn.fire",
-                    onStop: "{loadingIndicator}.events.hideOn.fire",
-                    batchFinished: "{loadingIndicator}.events.hideOn.fire"
+                    onStop: "{loadingIndicator}.events.hideOn.fire"
                 }
             }
         });
@@ -984,11 +989,6 @@ https://source.collectionspace.org/collection-space/LICENSE.txt
         fluid.demands("cspace.batchRunner.runBatch", ["cspace.batchRunner", "cspace.recordEditor"], {
             funcName: "cspace.batchRunner.runBatch",
             args: ["{batchRunner}.confirmation", "{batchRunner}.options.parentBundle", "{batchRunner}.requestBatch", "{recordEditor}"]
-        });
-        
-        fluid.demands("cspace.reportProducer.generateReport", ["cspace.reportProducer", "cspace.recordEditor"], {
-            funcName: "cspace.reportProducer.generateReport",
-            args: ["{reportProducer}.confirmation", "{reportProducer}.options.parentBundle", "{reportProducer}.requestReport", "{recordEditor}"]
         });
         
         // Confirmation demands
@@ -2382,7 +2382,7 @@ https://source.collectionspace.org/collection-space/LICENSE.txt
             funcName: "cspace.search.searchView.search",
             args: ["{arguments}.0", "{searchView}"]
         });
-
+        
         fluid.demands("cspace.search.searchView.search", ["cspace.search.searchView", "cspace.searchToRelateDialog", "cspace.advancedSearch"], {
             funcName: "cspace.search.searchView.search",
             args: ["{arguments}.0", "{searchView}"]

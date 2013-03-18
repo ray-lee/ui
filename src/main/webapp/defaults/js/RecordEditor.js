@@ -86,8 +86,49 @@ cspace = cspace || {};
         processChanges(that, false);
     };
 
+	//Set Cookie
+	var setCookie = function (name, value, days) {
+		var ex;
+		if (days) {
+			var d = new Date();
+			d.setTime(d.getTime() + (days*24*60*60*1000));
+			ex = "; expires=" + d.toUTCString();
+		} 
+		else {
+			ex = ""; 
+		}
+		document.cookie = name+"="+value+ex+"; path=/";
+	};
+	
+	//Get Cookie
+	var getCookie = function (name) {
+		name = name+"=";
+		var ca = document.cookie.split(';');
+		for (var i=0; i<ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0)==' ') c = c.substring(1,c.length);
+			if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+		}
+		return null;
+	};
+
     var bindEventHandlers = function (that) {
-        
+		// Save Cookie
+		that.events.onSave.addListener(function() {
+			// if (!that.model.csid) {
+			if (that.options.recordType == "media") {
+				setCookie("scientificTaxonomy", that.model.fields.scientificTaxonomy, 7);
+			}
+			// }
+		});
+		
+		//Get Cookie
+		that.events.prepareModelForRender.addListener(function() {
+			if (!that.model.csid && !that.model.fields.scientificTaxonomy) {
+				if (that.options.recordType == "media") that.model.fields.scientificTaxonomy = getCookie('scientificTaxonomy');
+			}
+		});
+
         that.events.onSave.addListener(validateIdentificationNumber(that.dom, that.container, that.messageBar, that.lookupMessage(fluid.stringTemplate("%recordtype-identificationNumberRequired", { recordtype: that.options.recordType }))));
         
         that.events.onSave.addListener(function () {
