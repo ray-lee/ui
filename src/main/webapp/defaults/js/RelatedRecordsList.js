@@ -163,7 +163,7 @@ cspace = cspace || {};
                 condition: "${showShowButton}",
                 trueTree: {
                     showButton: {
-                        messagekey: "sidebar-show",
+                        messagekey: "sidebar-showButton",
                         decorators: [{
                             type: "jQuery",
                             func: "prop",

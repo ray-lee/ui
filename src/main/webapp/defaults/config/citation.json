@@ -1,13 +1,13 @@
 {
     "pageBuilder": {
         "options": {
-            "pageType": "taxon",
+            "pageType": "citation",
             "components": {
                 "recordEditor": {
                     "type":  "cspace.recordEditor",
                     "options": {
                         "selectors": {
-                            "identificationNumber": ".csc-taxonAuthority-termDisplayName"
+                            "identificationNumber": ".csc-citationAuthority-termDisplayName"
                         },
                         "uispec": "{pageBuilder}.options.uispec.recordEditor",
                         "fieldsToIgnore": ["csid", "fields.csid", "fields.shortIdentifier", "fields.narrowerContexts"]
@@ -18,7 +18,7 @@
                     "options": {
                         "fields": [{
                             "type": "repeatableMatch",
-                            "queryPath": "fields.taxonTermGroup",
+                            "queryPath": "fields.citationTermGroup",
                             "childPath": "_primary",
                             "value": true,
                             "path": "termDisplayName"
@@ -43,10 +43,11 @@
     },
     "pageBuilderIO": {
         "options": {
-            "recordType": "taxon",
+            "recordType": "citation",
             "schema": {
-                "taxon": null
+                "citation": null
             }
         }
     }
 }
+
