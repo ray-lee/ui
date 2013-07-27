@@ -1,65 +1,68 @@
 <div class="fl-container-flex fl-fix information-group">                                         
     <div class="csc-recordEditor-header fl-container-flex header toggle csc-intake-objectEntryInformation-label"></div>
-    <div class="csc-recordEditor-togglable fl-container-flex fl-fix content main">
-        <div class="info-column">
-            <div class="info-column2-50 fl-force-left" >                                                
-                <div class="info-pair">
-                    <span class="label required csc-intake-entryNumber-label"></span><span class="required">*</span>
-                    <div class="content csc-intake-entry-number-container clearfix"><input type="text" class="input-alpha csc-intake-entry-number pattern-chooser-input" /></div>
-                </div>
-                
-                <div class="info-pair-date">
-                    <div class="label csc-intake-entryDate-label"></div>
-                    <div class="content">
-                        <input type="text" class="csc-intake-entry-date" />
-                    </div>                                                    
-                </div>
-                
-                <div class="info-pair-select">
-                    <div class="header">
-                        <div class="label csc-intake-entryReason-label"></div>
-                    </div>
-                    <div class="content">
-                        <table>                                        
-                            <tbody>
-                                <tr class="csc-intake-entry-reason-row">
-                                    <td><select class="csc-intake-entry-reason input-select"><option value="">Options not loaded</option></select></td>
-                                </tr>
-                            </tbody>
-                        </table>
+    <div class="csc-recordEditor-togglable fl-container-flex fl-fix content main"> <!-- Entry number, Entry date, Entry depositor, depositor requirements, Current owner, Entry note, Packing note -->
+        <div class="info-column pahmaCustomColumnWidth">
+            <div class="info-column2-50 fl-force-left" > <!-- Entry number, Entry date, Entry depositor, depositor requirements, Current owner -->
+                <div class="info-column2-70 fl-force-left"> <!-- Entry number -->
+                    <div class="info-pair">
+                        <span class="label required csc-intake-entryNumber-label"></span><span class="required">*</span>
+                        <div class="content csc-intake-entry-number-container clearfix"><input type="text" class="input-alpha csc-intake-entry-number pattern-chooser-input" /></div>
                     </div>
                 </div>
-                
-                <div class="info-pair-select">
-                    <div class="header">
-                        <div class="label csc-intake-entryMethods-label"></div>
+                <div class="info-column2-30 fl-force-right"> <!-- Entry date -->
+                    <div class="info-pair-date">
+                        <div class="label csc-intake-entryDate-label"></div>
+                        <div class="content">
+                            <input type="text" class="csc-intake-entry-date caldatefield" />
+                        </div>                                                    
                     </div>
-                    <div class="content">
-                        <select class="csc-intake-entryMethod input-select"><option value="">Options not loaded</option></select>
-                    </div>
-                </div>                                              
+                </div>
             </div>
         
-            <div class="info-column2-50 fl-force-right">
-                <div class="info-pair-date">
-                    <div class="header">
-                        <div class="label csc-intake-returnDate-label"></div>
+            <div class="info-column2-50 fl-force-right"> <!-- Entry method, Entry reason, Return date, Entry note -->
+                <div class="info-column2-40 fl-force-left" > <!-- Entry method -->
+                    <div class="narrow info-pair-select">
+                        <div class="header">
+                            <div class="label csc-intake-entryMethods-label"></div>
+                        </div>
+                        <div class="content">
+                            <select class="csc-intake-entryMethod input-select"><option value="">Options not loaded</option></select>
+                        </div>
+                    </div>                                              
+                </div>
+                <div class="info-column2-60 fl-force-right" >
+                    <div class="info-column2-50 fl-force-left" > <!-- Entry reason -->
+                        <div class="info-pair-select">
+                            <div class="header">
+                                <div class="label csc-intake-entryReason-label"></div>
+                            </div>
+                            <div class="content">
+                                <table>                                        
+                                    <tbody>
+                                        <tr class="csc-intake-entry-reason-row">
+                                            <td><select class="csc-intake-entry-reason input-select"><option value="">Options not loaded</option></select></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
-                    <div class="content">
-                        <input type="text" class="csc-intake-returnDate" />
+                    <div class="info-column2-50 fl-force-right" > <!-- Return date -->
+                        <div class="info-pair-date">
+                            <div class="header">
+                                <div class="label csc-intake-returnDate-label"></div>
+                            </div>
+                            <div class="content">
+                                <input type="text" class="csc-intake-returnDate caldatefield" />
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-                <div class="info-pair">
-                    <div class="header">
-                        <div class="label csc-intake-currentOwner-label"></div>
-                    </div>
-                    <div class="content">
-                        <input type="text" class="input-autocomplete csc-intake-current-owner" />                                                                   
-                    </div>
-                </div>
-                
-                <div class="info-pair">
+            </div>
+        </div>
+        <div class="info-column pahmaCustomColumnWidth">
+            <div class="info-column2-50 fl-force-left" >
+                <div class="info-pair"> <!-- Entry depositor, depositor requirements -->
                     <div class="header">
                         <div class="label csc-intake-depositorGroup-label"></div>
                     </div>
@@ -81,19 +84,27 @@
                         </table>
                     </div>
                 </div>
+                <div class="info-pair"> <!-- Current owner -->
+                    <div class="header">
+                        <div class="label csc-intake-currentOwner-label"></div>
+                    </div>
+                    <div class="content">
+                        <input type="text" class="input-autocomplete csc-intake-current-owner" />                                                                   
+                    </div>
+                </div>                                                                                 
+            </div>                            
+            <div class="info-column2-50 fl-force-right" >
+                <div class="info-pair"> <!-- Entry note -->
+                    <div class="header">
+                        <div class="label csc-intake-entryNote-label"></div>
+                    </div>
+                    <div class="content">
+                        <textarea rows="4" cols="30" class="input-textarea csc-intake-entry-note" />
+                    </div>
+                </div>
             </div>
         </div>
-        
-        <div class="info-column">
-            <div class="info-pair">
-                <div class="header">
-                    <div class="label csc-intake-entryNote-label"></div>
-                </div>
-                <div class="content">
-                    <textarea rows="4" cols="30" class="input-textarea csc-intake-entry-note" />
-                </div>
-            </div>
-        
+        <div class="info-column"> <!-- Packing note -->
             <div class="info-pair">
                 <div class="header">
                     <div class="label csc-intake-packingNote-label"></div>
@@ -111,34 +122,29 @@
     <div class="csc-recordEditor-togglable fl-container-flex fl-fix content main">
         <div class="info-column">
             <div class="info-column2-50 fl-force-left">
-                <div class="info-pair-date">
-                    <div class="header">
-                        <div class="label csc-intake-fieldCollectionDate-label"></div>
-                    </div>
-                    <div class="content">
-                        <input type="text" class="csc-intake-fieldCollectionDate" />
-                    </div>
-                </div>
-                
-                <div class="info-pair-select">
-                    <div class="header">
-                        <div class="label csc-intake-fieldCollectionMethods-label"></div>
-                    </div>
-                    <div class="content">
-                        <select class="input-select csc-intake-fieldCollectionMethod"><option value="">Options not loaded</option></select>
+                <div class="info-column2-50 fl-force-left"> <!-- Collection date -->
+                    <div class="info-pair-date">
+                        <div class="header">
+                            <div class="label csc-intake-fieldCollectionDate-label"></div>
+                        </div>
+                        <div class="content">
+                            <input type="text" class="csc-intake-fieldCollectionDate" />
+                        </div>
                     </div>
                 </div>
-                
-                <div class="info-pair">
-                    <div class="header">
-                        <div class="label csc-intake-fieldCollectionNote-label"></div>
-                    </div>
-                    <div class="content">
-                        <textarea rows="4" cols="30" class="input-textarea csc-intake-fieldCollectionNote" />
+                <div class="info-column2-50 fl-force-left"> <!-- Collection method -->                            
+                    <div class="narrow info-pair-select">
+                        <div class="header">
+                            <div class="label csc-intake-fieldCollectionMethods-label"></div>
+                        </div>
+                        <div class="content">
+                            <select class="input-select csc-intake-fieldCollectionMethod"><option value="">Options not loaded</option></select>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="info-pair">
+                <div class="clear"></div>
+
+                <div class="info-pair"> <!-- Field collection number -->
                     <div class="header">
                         <div class="label csc-intake-fieldCollectionNumber-label"></div>
                     </div>
@@ -146,6 +152,15 @@
                         <input type="text" class="input-alpha csc-intake-fieldCollectionNumber" />
                     </div>
                 </div>
+                
+                <div class="info-pair"> <!-- Collection note -->
+                    <div class="header">
+                        <div class="label csc-intake-fieldCollectionNote-label"></div>
+                    </div>
+                    <div class="content">
+                        <textarea rows="4" cols="30" class="input-textarea csc-intake-fieldCollectionNote" />
+                    </div>
+                </div>                            
             </div>
         
             <div class="info-column2-50 fl-force-right">                                                    
@@ -193,7 +208,7 @@
     <div class="csc-recordEditor-header fl-container-flex header toggle csc-intake-valuationInformation-label"></div>
     <div class="csc-recordEditor-togglable fl-container-flex fl-fix content main">
         <div class="info-column">
-            <div class="info-column2-50 fl-force-left">
+            <div class="info-column2-50 fl-force-left"> <!-- Valuer -->
                 <div class="info-pair">
                     <div class="header">
                         <div class="label csc-intake-valuer-label"></div>
@@ -204,7 +219,7 @@
                 </div>
             </div>
 
-            <div class="info-column2-50 fl-force-right">
+            <div class="info-column2-50 fl-force-right"> <!-- Valuation reference number -->
                 <div class="info-pair">
                     <div class="header">
                         <div class="label csc-intake-valuationReferenceNumber-label"></div>
@@ -328,7 +343,7 @@
             </div>
         </div>                                              
     </div>
-</div>
+</div>                                        
             
 <div class="fl-container-flex fl-fix information-group">                                    
     <div class="csc-recordEditor-header fl-container-flex header toggle csc-intake-conditionInformation-label"></div>
@@ -395,4 +410,5 @@
             </div>
         </div>
     </div>                                        
-</div>
+</div>                                    
+

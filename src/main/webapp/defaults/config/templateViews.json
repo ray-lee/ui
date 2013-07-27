@@ -1,8 +1,2 @@
 {
-    "cataloging": {
-        "templates": ["inventory", "photograph"]
-    },
-    "intake": {
-        "templates": ["doorstopDonation"]
-    }
 }
