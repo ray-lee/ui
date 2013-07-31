@@ -22,7 +22,7 @@
                     "options": {
                         "fields": [
                             "fields.identificationNumber",
-                            "fields.title"
+                            "fields.scientificTaxonomy"
                         ]
                     }
                 },

@@ -376,6 +376,7 @@ https://source.collectionspace.org/collection-space/LICENSE.txt
         fluid.demands("cspace.autocomplete.popup.miniView.urnToCSID", ["cspace.autocomplete.popup.miniView", "location-miniView"], authUrnToCSID);
         fluid.demands("cspace.autocomplete.popup.miniView.urnToCSID", ["cspace.autocomplete.popup.miniView", "concept-miniView"], authUrnToCSID);
         fluid.demands("cspace.autocomplete.popup.miniView.urnToCSID", ["cspace.autocomplete.popup.miniView", "place-miniView"], authUrnToCSID);
+        fluid.demands("cspace.autocomplete.popup.miniView.urnToCSID", ["cspace.autocomplete.popup.miniView", "taxon-miniView"], authUrnToCSID);
         fluid.demands("cspace.autocomplete.popup.miniView.renderer", ["cspace.autocomplete.popup.miniView", "person-miniView"], {
             options: {
                 protoTree: {
@@ -444,6 +445,32 @@ https://source.collectionspace.org/collection-space/LICENSE.txt
                 }
             }
         });
+        fluid.demands("cspace.autocomplete.popup.miniView.renderer", ["cspace.autocomplete.popup.miniView", "taxon-miniView"], {
+            options: {
+                protoTree: {
+                    displayName: {
+                        target: "${miniView-link}",
+                        linktext: "${fields.termDisplayName}"
+                    },
+                    field1: "${fields.taxonTermGroup.0.termType}",
+                    field2: "${fields.taxonTermGroup.0.termStatus}",
+                    field3: "${fields.taxonRank}",
+                    field4: "${fields.taxonMajorGroup}",
+                    field1Label: {
+                        messagekey: "taxon-miniView-field1Label"
+                    },
+                    field2Label: {
+                        messagekey: "taxon-miniView-field2Label"
+                    },
+                    field3Label: {
+                        messagekey: "taxon-miniView-field3Label"
+                    },
+                    field4Label: {
+                        messagekey: "taxon-miniView-field4Label"
+                    }
+                }
+            }
+        });        
         fluid.demands("cspace.autocomplete.popup.miniView.renderer", ["cspace.autocomplete.popup.miniView", "cataloging-miniView"], {
             options: {
                 toCSID: "cspace.util.urnToCSID",
@@ -490,6 +517,7 @@ https://source.collectionspace.org/collection-space/LICENSE.txt
         fluid.demands("cspace.autocomplete.popup.miniView.dataSource", ["cspace.autocomplete.popup.miniView", "location-miniView"], authDataSourceDemands);
         fluid.demands("cspace.autocomplete.popup.miniView.dataSource", ["cspace.autocomplete.popup.miniView", "concept-miniView"], authDataSourceDemands);
         fluid.demands("cspace.autocomplete.popup.miniView.dataSource", ["cspace.autocomplete.popup.miniView", "place-miniView"], authDataSourceDemands);
+        fluid.demands("cspace.autocomplete.popup.miniView.dataSource", ["cspace.autocomplete.popup.miniView", "taxon-miniView"], authDataSourceDemands);
         fluid.demands("cspace.autocomplete.authoritiesDataSource", "cspace.autocomplete", {
             funcName: "cspace.URLDataSource",
             args: {
@@ -504,7 +532,7 @@ https://source.collectionspace.org/collection-space/LICENSE.txt
         fluid.demands("cspace.autocomplete.matchesDataSource", "cspace.autocomplete", {
             funcName: "cspace.URLDataSource", 
             args: {
-                url: "%queryUrl?q=%term%vocab",
+                url: "%queryUrl?pageSize=100&q=%term%vocab",
                 termMap: {
                     queryUrl: "{autocomplete}.options.queryUrl",
                     term: "encodeURIComponent:%term",
@@ -560,6 +588,7 @@ https://source.collectionspace.org/collection-space/LICENSE.txt
         fluid.demands("cspace.autocomplete", "cspace.recordEditor", {
             container: "{arguments}.0",
             mergeAllOptions: [{
+                delay: 2000,
                 model: {
                     vocab: {
                         expander: {
@@ -1494,7 +1523,7 @@ https://source.collectionspace.org/collection-space/LICENSE.txt
             funcName: "cspace.search.searchView.search",
             args: ["{arguments}.0", "{searchView}"]
         });
-
+        
         fluid.demands("cspace.search.searchView.search", ["cspace.search.searchView", "cspace.searchToRelateDialog", "cspace.advancedSearch"], {
             funcName: "cspace.search.searchView.search",
             args: ["{arguments}.0", "{searchView}"]
@@ -1944,6 +1973,7 @@ https://source.collectionspace.org/collection-space/LICENSE.txt
                }
             }, "{arguments}.1"]
         });
+
         fluid.demands("cspace.computedField", "cspace.advancedSearch.searchFields", {
             container: "{arguments}.0",
             mergeAllOptions: [{

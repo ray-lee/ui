@@ -7,8 +7,7 @@
                     "type":  "cspace.recordEditor",
                     "options": {
                         "selectors": {
-                            "identificationNumber": ".csc-object-identification-object-number" 
-                        },
+                         },
                         "uispec": "{pageBuilder}.options.uispec.recordEditor",
                         "fieldsToIgnore": ["csid", "fields.csid", "fields.objectNumber", "fields.narrowerContexts"]
                     }
@@ -19,10 +18,10 @@
                         "fields": [
                             "fields.objectNumber", {
                             "type": "repeatableMatch",
-                            "queryPath": "fields.titleGroup",
+                            "queryPath": "fields.taxonomicIdentGroup",
                             "childPath": "_primary",
                             "value": true,
-                            "path": "title"
+                            "path": "taxon"
                         }]
                     }
                 },
