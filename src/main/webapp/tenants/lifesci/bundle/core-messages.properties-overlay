@@ -42,6 +42,7 @@ taxon-taxonAuthorLabel: Author
 taxon-taxonAuthorTypeLabel: Author Type
 taxon-taxonYearLabel: Year
 taxon-taxonIsNamedHybridLabel: Is Named Hybrid
+taxon-taxonIsNamedHybridSearchLabel: Is Named Hybrid
 taxon-taxonCitationLabel: Citations
 taxon-taxonNoteLabel: Note
 taxon-commonNameGroupLabel: Common Name
