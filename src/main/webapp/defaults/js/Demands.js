@@ -1608,6 +1608,9 @@ https://source.collectionspace.org/collection-space/LICENSE.txt
                     cataloging: {
                         type: "fluid.emptySubcomponent"
                     },
+                    media: {
+                        type: "fluid.emptySubcomponent"
+                    },
                     procedures: {
                         type: "fluid.emptySubcomponent"
                     },
