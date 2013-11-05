@@ -3,23 +3,28 @@ package edu.berkeley.cspace.cinefiles;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class PersonRecordEditorTest extends CineFilesTest {
+public class CreatePersonIT extends CineFilesIT {
+	public static final Logger logger = Logger.getLogger(CreatePersonIT.class);
+
+	public static final String PERSON_URL = BASE_URL + "/person.html?vocab=person";
+
 	/**
-	 * Tests the person record editor.
+	 * Tests creating a person record.
 	 * <ul>
 	 * <li>The birthPlace field should be tied to the country vocabulary</li>
 	 * <li>The contact addressCountry term list should load (BAMPFA-37)</li>
 	 * <li>All extension fields should save</li>
 	 * </ul>
 	 */
-	@Test(dependsOnMethods = { "testLogin" })
-	public void testPersonRecordEditor() {
-		driver.get(PERSON_URL);
+	@Test (dependsOnMethods = { "testLogin" })
+	public void testCreatePerson() {
+		navigateTo(PERSON_URL);
 		
-		Assert.assertTrue(isTiedToCountryTermList("csc-personAuthority-birthPlace"), "birthPlace is not tied to country term list");
+		Assert.assertTrue(isTiedToCountryTermList("csc-personAuthority-birthPlace"), "birthPlace should be tied to country term list");
 		testContactAddressCountryLoads();
 		
 		Map<String, String> fieldValues = new LinkedHashMap<String, String>();

@@ -1,6 +1,6 @@
 package edu.berkeley.cspace.cinefiles;
 
-import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -16,8 +16,8 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 
-public class CineFilesTest {
-	public static final Logger logger = Logger.getLogger(CineFilesTest.class);
+public class CineFilesIT {
+	public static final Logger logger = Logger.getLogger(CineFilesIT.class);
 	
 	public static final String HOST = "cspace-vm";
 	public static final String TENANT_NAME = "cinefiles";
@@ -26,18 +26,19 @@ public class CineFilesTest {
 
 	public static final String BASE_URL = "http://" + HOST + ":8180/collectionspace/ui/" + TENANT_NAME + "/html";
 	public static final String LOGIN_URL = BASE_URL + "/index.html";
-	public static final String PERSON_URL = BASE_URL + "/person.html?vocab=person";
-	public static final String ORGANIZATION_URL = BASE_URL + "/organization.html?vocab=organization";
-	public static final String WORK_URL = BASE_URL + "/work.html?vocab=work";
 	
-	public static final long TIMEOUT = 5;
+	public static final long DEFAULT_TIMEOUT = 5;
 	public static final long SAVE_TIMEOUT = 10;
 	
-	protected WebDriver driver = new FirefoxDriver();
+	public static final long PAGE_LOAD_PAUSE = 2;
+	public static final long NUMBER_GENERATOR_PAUSE = 1;
+	
+	protected WebDriver driver;
 	
 	@BeforeClass
-	public void setUp() {	
-		driver.manage().timeouts().implicitlyWait(TIMEOUT, TimeUnit.SECONDS);
+	public void setUp() {
+		driver = new FirefoxDriver();
+		driver.manage().timeouts().implicitlyWait(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
 	}
 
 	@AfterClass
@@ -52,9 +53,9 @@ public class CineFilesTest {
 	 * <li>The landing page should be the Find and Edit page</li>
 	 * </ul>
 	 */
-//	@Test
+	@Test
 	public void testLogin() {
-		driver.get(LOGIN_URL);
+		navigateTo(LOGIN_URL);
 
 		try {
 			driver.findElement(By.className("csc-login-userId")).sendKeys(USERNAME);
@@ -62,7 +63,7 @@ public class CineFilesTest {
 			driver.findElement(By.className("csc-login-button")).click();
 		}
 		catch(NoSuchElementException e) {
-			Assert.fail("Login fields not found - CollectionSpace may not be running");
+			Assert.fail("login fields not found");
 			return;
 		}
 		
@@ -82,57 +83,28 @@ public class CineFilesTest {
 			catch(NoSuchElementException e) { }
 			
 			if (errorElement == null) {
-				Assert.fail("Login failed with no error message");
+				Assert.fail("login failed with no error message");
 			}
 			else {
 				WebElement messageElement = errorElement.findElement(By.id("message"));
 				String errorMessage = messageElement.getText();
 				
-				Assert.fail("Login failed with error: " + errorMessage);
+				Assert.fail("login failed with error " + errorMessage);
 			}
 		}
 		else {
-			Assert.assertEquals(driver.getTitle(), "CollectionSpace - Find and Edit", "Incorrect landing page");		
+			Assert.assertEquals(driver.getTitle(), "CollectionSpace - Find and Edit", "incorrect landing page");		
 		}
-	}
-
-	/**
-	 * Tests the organization record editor.
-	 * <ul>
-	 * <li>The foundingPlace field should be tied to the country vocabulary</li>
-	 * <li>The contact addressCountry term list should load (BAMPFA-37)</li>
-	 * <li>All extension fields should save</li>
-	 * </ul>
-	 */
-	//@Test(dependsOnMethods = { "testLogin" })
-	public void testOrganizationRecordEditor() {
-		driver.get(ORGANIZATION_URL);
-		
-		Assert.assertTrue(isTiedToCountryTermList("csc-orgAuthority-foundingPlace"), "foundingPlace is not tied to country term list");
-		testContactAddressCountryLoads();
-		
-		Map<String, String> fieldValues = new LinkedHashMap<String, String>();
-		fieldValues.put("csc-orgAuthority-termDisplayName", "Test Org");
-		fieldValues.put("csc-organization-foundingCity", "City");
-		fieldValues.put("csc-organization-foundingState", "State");
-		fieldValues.put("csc-orgAuthority-foundingPlace", "Australia");
-		fieldValues.put("csc-organization-accessCode", "Campus (UCB)");
-		fieldValues.put("csc-organization-member", "Michael Member");
-		fieldValues.put("csc-organization-memberNote", "Member note");
-		fieldValues.put("csc-organization-memberAuthority", "Citation 1");
-		fieldValues.put("csc-contact-addressCountry", "England");
-
-		testSave(fieldValues);
 	}
 	
 	protected void testSave(Map<String, String> fieldValues) {
 		fillForm(fieldValues);
 		testSaveForm();
 		
-		// Pause to let all the term lists load
-		pause(2000);
-		closeMessageBar();
+		// Pause to let AJAX calls settle down
+		pause(PAGE_LOAD_PAUSE);
 		
+		closeMessageBar();
 		testFormContainsValues(fieldValues);
 	}
 	
@@ -144,7 +116,7 @@ public class CineFilesTest {
 			saveButtonElement = driver.findElement(By.className(saveButtonClassName));
 		}
 		catch(NoSuchElementException e) {
-			logger.warn("Failed to find save button with class: " + saveButtonClassName);
+			logger.warn("failed to find save button with class " + saveButtonClassName);
 		}
 		
 		if (saveButtonElement != null) {
@@ -156,13 +128,13 @@ public class CineFilesTest {
 		try {
 			WebElement messageElement = driver.findElement(By.className("csc-messageBar-message"));
 			String messageText = messageElement.getText();
-			Assert.assertTrue(messageText.contains("success"), "Save failed with error: " + messageText);
+			Assert.assertTrue(messageText.contains("success"), "save should succeed without error (" + messageText + ")");
 		}
 		catch(NoSuchElementException e) {
-			Assert.fail("Save did not complete within the timeout period");
+			Assert.fail("save did not complete within " + SAVE_TIMEOUT + " seconds");
 		}
 		finally {
-			driver.manage().timeouts().implicitlyWait(TIMEOUT, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
 		}
 	}
 	
@@ -179,7 +151,7 @@ public class CineFilesTest {
 			element = driver.findElement(By.className(className));
 		}
 		catch(NoSuchElementException e) {
-			Assert.fail("No field found for class: " + className);
+			Assert.fail("no field found for class " + className);
 		}
 		
 		if (element != null) {		
@@ -196,7 +168,7 @@ public class CineFilesTest {
 				testTextFieldHasValue(className, element, value);
 			}
 			else {
-				logger.warn("Unknown field type for class: " + className);
+				logger.warn("unknown field type for class " + className);
 			}
 		}
 	}
@@ -212,12 +184,12 @@ public class CineFilesTest {
 		}
 		
 		if (selectedOptionElement == null) {
-			Assert.fail("No value selected for field " + className);
+			Assert.fail("no value selected for field " + className);
 		}
 		else {
 			String currentValue = selectedOptionElement.getText();
 
-			Assert.assertEquals(currentValue, expectedValue, "Incorrect value for field " + className);
+			Assert.assertEquals(currentValue, expectedValue, "incorrect value for field " + className);
 		}
 	}
 
@@ -227,7 +199,7 @@ public class CineFilesTest {
 		if (autocompleteInputElement != null) {
 			String currentValue = autocompleteInputElement.getAttribute("value");
 
-			Assert.assertEquals(currentValue, expectedValue, "Incorrect value for field " + className);
+			Assert.assertEquals(currentValue, expectedValue, "incorrect value for field " + className);
 		}
 	}
 
@@ -242,7 +214,7 @@ public class CineFilesTest {
 			currentValue = element.getAttribute("value");
 		}
 
-		Assert.assertEquals(currentValue, expectedValue, "Incorrect value for field " + className);
+		Assert.assertEquals(currentValue, expectedValue, "incorrect value for field " + className);
 	}
 	
 	protected void fillForm(Map<String, String> fieldValues) {
@@ -251,19 +223,35 @@ public class CineFilesTest {
 		}
 	}
 	
-	protected void fillField(String className, String value) {
+	protected void clearField(String className) {
 		WebElement element = null;
 		
 		try {
 			element = driver.findElement(By.className(className));
 		}
 		catch(NoSuchElementException e) {
-			logger.warn("No field found for class: " + className);
+			logger.warn("no field found for class " + className);
 		}
 		
-		if (element != null) {		
+		if (element != null) {
+			element.clear();
+		}
+	}
+	
+	protected void fillField(String className, String value) {
+		logger.warn("fillField: " + className);
+		WebElement element = null;
+		
+		try {
+			element = driver.findElement(By.className(className));
+		}
+		catch(NoSuchElementException e) {
+			logger.warn("no field found for class " + className);
+		}
+		
+		if (element != null) {
 			if (isCheckbox(element)) {
-				
+				fillCheckbox(element, value);
 			}
 			else if (isSelect(element)) {
 				fillSelectField(element, value);
@@ -275,13 +263,16 @@ public class CineFilesTest {
 				fillTextField(element, value);
 			}
 			else {
-				logger.warn("Unknown field type for class: " + className);
+				logger.warn("unknown field type for class " + className);
 			}
 		}
 	}
 	
 	protected boolean isCheckbox(WebElement element) {
-		return false;
+		logger.debug("isCheckbox: " + element.getAttribute("type"));
+		String tagName = element.getTagName();
+		
+		return (tagName.equalsIgnoreCase("input") && element.getAttribute("type").equalsIgnoreCase("checkbox"));
 	}
 	
 	protected boolean isSelect(WebElement element) {
@@ -304,17 +295,39 @@ public class CineFilesTest {
 		return isAutocomplete;
 	}
 	
+	protected boolean isNumberPattern(WebElement element) {
+		boolean isNumberPattern = false;
+		
+		if (isText(element)) {
+			WebElement chooserElement = findSiblingNumberPatternChooserElement(element);
+			
+			if (chooserElement != null) {
+				isNumberPattern = true;
+			}
+		}
+		
+		return isNumberPattern;
+	}
+	
 	protected WebElement findSiblingAutocompleteInputElement(WebElement element) {
-		WebElement autocompleteInputElement = null;
+		return findSiblingElementByClass(element, "cs-autocomplete-input");
+	}
+	
+	protected WebElement findSiblingNumberPatternChooserElement(WebElement element) {
+		return findSiblingElementByClass(element, "cs-numberPatternChooserContainer");
+	}
+	
+	protected WebElement findSiblingElementByClass(WebElement element, String className) {
+		WebElement foundElement = null;
 		
 		try {
 			driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
-			autocompleteInputElement = element.findElement(By.xpath("following-sibling::input[@class=\"cs-autocomplete-input\"]"));
-			driver.manage().timeouts().implicitlyWait(TIMEOUT, TimeUnit.SECONDS);
+			foundElement = element.findElement(By.xpath("following-sibling::*[@class=\"" + className + "\"]"));
+			driver.manage().timeouts().implicitlyWait(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
 		}
 		catch(NoSuchElementException e) { }
 		
-		return autocompleteInputElement;
+		return foundElement;	
 	}
 	
 	protected boolean isText(WebElement element) {
@@ -323,18 +336,61 @@ public class CineFilesTest {
 		return (tagName.equalsIgnoreCase("textarea") || (tagName.equalsIgnoreCase("input") && element.getAttribute("type").equalsIgnoreCase("text")));
 	}
 	
-	protected void fillSelectField(WebElement element, String value) {
+	protected void fillCheckbox(WebElement element, String text) {
+		boolean checked = Boolean.parseBoolean(text);
+				
+		logger.debug("before: " + element.getAttribute("checked"));
+		element.click();
+		logger.debug("after: " + element.getAttribute("checked"));		
+	}
+	
+	protected void fillSelectField(WebElement element, String text) {
 		WebElement optionElement = null;
 		
 		for (WebElement candidateOptionElement : element.findElements(By.tagName("option"))) {
-			if (candidateOptionElement.getText().equals(value)) {
+			if (candidateOptionElement.getText().equals(text)) {
 				optionElement = candidateOptionElement;
 				break;
 			}
 		}
 		
 		if (optionElement == null) {
-			logger.warn("No option found in select for value: " + value);
+			logger.warn("no option found in select for text " + text);
+		}
+		else {
+			element.click();
+			optionElement.click();
+			element.sendKeys("\n");
+		}
+	}
+
+	protected void fillSelectFieldByValue(String className, String value) {
+		WebElement element = null;
+		
+		try {
+			element = driver.findElement(By.className(className));
+		}
+		catch(NoSuchElementException e) {
+			logger.warn("no field found for class " + className);
+		}
+		
+		if (element != null) {
+			fillSelectFieldByValue(element, value);
+		}
+	}
+	
+	protected void fillSelectFieldByValue(WebElement element, String value) {
+		WebElement optionElement = null;
+		
+		for (WebElement candidateOptionElement : element.findElements(By.tagName("option"))) {
+			if (candidateOptionElement.getAttribute("value").equals(value)) {
+				optionElement = candidateOptionElement;
+				break;
+			}
+		}
+		
+		if (optionElement == null) {
+			logger.warn("no option found in select for value " + value);
 		}
 		else {
 			element.click();
@@ -367,7 +423,7 @@ public class CineFilesTest {
 				matchSpanElement.click();
 			}
 			else {
-				logger.debug("Adding term: " + value);
+				logger.debug("adding term " + value);
 
 				WebElement addToPanelElement = popupElement.findElement(By.className("csc-autocomplete-addToPanel"));
 				WebElement firstAuthorityItem = addToPanelElement.findElement(By.tagName("li"));
@@ -383,8 +439,83 @@ public class CineFilesTest {
 		element.sendKeys("\n");
 	}
 
+	protected String chooseNextNumber(String className) {
+		return chooseNextNumber(className, null);
+	}
+	
+	protected String chooseNextNumber(String className, String patternName) {
+		WebElement element = null;
+		String nextNumber = "";
+		
+		try {
+			element = driver.findElement(By.className(className));
+		}
+		catch(NoSuchElementException e) {
+			logger.warn("no field found for class " + className);
+		}
+		
+		if (element != null) {
+			if (isNumberPattern(element)) {
+				chooseNextNumber(findSiblingNumberPatternChooserElement(element), patternName);
+				pause(NUMBER_GENERATOR_PAUSE);
+				nextNumber = element.getAttribute("value");
+			}
+			else {
+				logger.warn(className + " is not a number pattern field");
+			}
+		}
+		
+		return nextNumber;
+	}
+	
+	protected void chooseNextNumber(WebElement numberPatternChooserElement) {
+		chooseNextNumber(numberPatternChooserElement, null);
+	}
+	
+	protected void chooseNextNumber(WebElement numberPatternChooserElement, String patternName) {
+		WebElement buttonElement = null;
+
+		try {
+			buttonElement = driver.findElement(By.className("csc-numberPatternChooser-button"));
+		}
+		catch(NoSuchElementException e) {
+			logger.warn("button not found for number pattern chooser");
+		}
+
+		if (buttonElement != null) {
+			buttonElement.click();
+			
+			List<WebElement> candidatePatternElements = buttonElement.findElements(By.xpath("//td[@class=\"csc-numberPatternChooser-name\"]"));
+			WebElement patternElement = null;
+			
+			if (candidatePatternElements.size() > 0) {
+				if (patternName != null) {
+					for (WebElement candidatePatternElement : candidatePatternElements) {
+						if (candidatePatternElement.getText().equals(patternName)) {
+							patternElement = candidatePatternElement;
+							break;
+						}
+					}
+				}
+				else {
+					patternElement = candidatePatternElements.get(0);
+				}
+				
+				if (patternElement != null) {
+					patternElement.click();
+				}
+				else {
+					logger.warn("no pattern found for name " + patternName);
+				}
+			}
+			else {
+				logger.warn("no patterns found for number pattern chooser");
+			}
+		}
+	}
+	
 	protected void testContactAddressCountryLoads() {
-		Assert.assertTrue(isTiedToCountryTermList("csc-contact-addressCountry"), "Contact addressCountry term list did not load");
+		Assert.assertTrue(isTiedToCountryTermList("csc-contact-addressCountry"), "csc-contact-addressCountry term list should be loaded");
 	}
 	
 	protected boolean isTiedToCountryTermList(String className) {
@@ -392,6 +523,8 @@ public class CineFilesTest {
 			driver.findElement(By.cssSelector("select." + className + " option[value^=\"urn:cspace:cinefiles.cspace.berkeley.edu:vocabularies:name(country)\"]"));
 		}
 		catch(NoSuchElementException e) {
+			logger.warn("no field found for class " + className);
+			
 			return false;
 		}
 		
@@ -403,13 +536,20 @@ public class CineFilesTest {
 			driver.findElement(By.className("csc-messageBar-cancel")).click();
 		}
 		catch(NoSuchElementException e) {
-			logger.warn("Failed to find message bar cancel button");
+			logger.warn("failed to find message bar cancel button");
 		}
 	}
 	
-	protected void pause(long millis) {
+	protected void navigateTo(String url) {
+		driver.get(url);
+		
+		// Pause to let AJAX calls settle down
+		pause(PAGE_LOAD_PAUSE);
+	}
+	
+	protected void pause(long seconds) {
 		try {
-			Thread.sleep(millis);
+			Thread.sleep(seconds * 1000);
 		} catch (InterruptedException e) {}
 	}
 }
