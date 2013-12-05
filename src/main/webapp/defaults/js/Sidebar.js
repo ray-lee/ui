@@ -217,6 +217,31 @@ cspace = cspace || {};
                     },
                     model: {
                         related: "procedures"
+                    },
+                    components: {
+                        rrlListView: {
+                            options: {
+                                model: {
+                                    columns: [{
+                                        sortable: true,
+                                        id: "number",
+                                        name: "%recordType-number"
+                                    }, {
+                                        sortable: true,
+                                        id: "summary",
+                                        name: "title"
+                                    }, {
+                                        sortable: true,
+                                        id: "summarylist.updatedAt",
+                                        name: "updatedAt"
+                                    }, {
+                                        sortable: true,
+                                        id: "csid",
+                                        name: "csid"
+                                    }]
+                                }
+                            }
+                        }
                     }
                 }
             },
