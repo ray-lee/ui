@@ -29,6 +29,8 @@ media-resolutionLabel: Resolution
 media-number: Page Number
 media-pageStartLabel: From
 media-pageEndLabel: To
+media-identificationNumberRequired: Please specify a Page Number
+media-titleSearchLabel: File name
 
 # Person
 person-birthPlaceLabel: Country of Birth
@@ -109,5 +111,4 @@ collection-object-filmSubjectsLabel: Film Subject
 collection-object-filmSubjectLabel: Film Subject
 collection-object-docLanguagesLabel: Document Language
 collection-object-docLanguageLabel: Document Language
-collection-object-sourcesLabel: Source
 collection-object-sourceLabel: Source
