@@ -69,14 +69,13 @@ public class CreateWorkIT extends CineFilesIT {
 		this.testFieldHasValue("csc-workAuthority-termDisplayName", "An Education");
 
 		// If the article is empty, the display name should just be the title.
-		// The display name of the empty article should be a non-breaking space.	
 		
 		this.fillSelectFieldByValue("csc-workAuthority-termQualifier", "");
 		this.testFieldHasValue("csc-workAuthority-termDisplayName", "Education");
-				
+
+		navigateTo(WORK_URL);
+
 		// Extension fields should save.
-	
-		this.clearField("csc-workAuthority-termName");
 
 		Map<String, String> fieldValues = new LinkedHashMap<String, String>();
 		fieldValues.put("csc-workAuthority-termQualifier", "The");
@@ -84,7 +83,7 @@ public class CreateWorkIT extends CineFilesIT {
 		fieldValues.put("csc-work-country", "United States");
 		fieldValues.put("csc-work-language", "English");
 		fieldValues.put("csc-work-genre", "Horror");
-		fieldValues.put("csc-work-theme", "Theme 1");
+		fieldValues.put("csc-work-theme", "Theme 5");
 		
 		testSave(fieldValues);
 	}

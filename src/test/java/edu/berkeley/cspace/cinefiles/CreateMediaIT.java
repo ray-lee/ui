@@ -20,12 +20,8 @@ public class CreateMediaIT extends CineFilesIT {
 	@Test(dependsOnMethods = { "testLogin" })
 	public void testCreateMedia() {
 		navigateTo(MEDIA_URL);
-		
-		String identificationNumber = chooseNextNumber("csc-media-identificationNumber");
-		clearField("csc-media-identificationNumber");
-		
+				
 		Map<String, String> fieldValues = new LinkedHashMap<String, String>();
-		fieldValues.put("csc-media-identificationNumber", identificationNumber);
 		fieldValues.put("csc-media-page", "1");
 
 		testSave(fieldValues);

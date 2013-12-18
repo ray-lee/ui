@@ -32,6 +32,7 @@ public class CineFilesIT {
 	
 	public static final long PAGE_LOAD_PAUSE = 2;
 	public static final long NUMBER_GENERATOR_PAUSE = 1;
+	public static final long ADD_TERM_PAUSE = 1;
 	
 	protected WebDriver driver;
 	
@@ -54,7 +55,7 @@ public class CineFilesIT {
 	 * </ul>
 	 */
 	@Test
-	public void testLogin() {
+	public void testLogin() {		
 		navigateTo(LOGIN_URL);
 
 		try {
@@ -147,16 +148,21 @@ public class CineFilesIT {
 	protected void testFieldHasValue(String className, String value) {
 		WebElement element = null;
 		
-		try {
-			element = driver.findElement(By.className(className));
+		List<WebElement> elements = driver.findElements(By.className(className));
+		
+		if (elements.size() > 1) {
+			Assert.fail("multiple fields found for class " + className);
 		}
-		catch(NoSuchElementException e) {
+		else if (elements.size() < 1) {
 			Assert.fail("no field found for class " + className);
+		}
+		else {
+			element = elements.get(0);
 		}
 		
 		if (element != null) {		
 			if (isCheckbox(element)) {
-				
+				testCheckboxHasValue(className, element, value);
 			}
 			else if (isSelect(element)) {
 				testSelectFieldHasValue(className, element, value);
@@ -171,6 +177,16 @@ public class CineFilesIT {
 				logger.warn("unknown field type for class " + className);
 			}
 		}
+	}
+	
+	protected void testCheckboxHasValue(String className, WebElement element, String expectedValue) {
+		String currentValue = element.getAttribute("checked");
+		
+		if (currentValue == null) {
+			currentValue = "false";
+		}
+		
+		Assert.assertEquals(currentValue, expectedValue, "incorrect value for field " + className);
 	}
 	
 	protected void testSelectFieldHasValue(String className, WebElement element, String expectedValue) {
@@ -239,14 +255,18 @@ public class CineFilesIT {
 	}
 	
 	protected void fillField(String className, String value) {
-		logger.warn("fillField: " + className);
 		WebElement element = null;
 		
-		try {
-			element = driver.findElement(By.className(className));
+		List<WebElement> elements = driver.findElements(By.className(className));
+		
+		if (elements.size() > 1) {
+			logger.warn("multiple fields found for class " + className);
 		}
-		catch(NoSuchElementException e) {
+		else if (elements.size() < 1) {
 			logger.warn("no field found for class " + className);
+		}
+		else {
+			element = elements.get(0);
 		}
 		
 		if (element != null) {
@@ -269,7 +289,6 @@ public class CineFilesIT {
 	}
 	
 	protected boolean isCheckbox(WebElement element) {
-		logger.debug("isCheckbox: " + element.getAttribute("type"));
 		String tagName = element.getTagName();
 		
 		return (tagName.equalsIgnoreCase("input") && element.getAttribute("type").equalsIgnoreCase("checkbox"));
@@ -337,11 +356,15 @@ public class CineFilesIT {
 	}
 	
 	protected void fillCheckbox(WebElement element, String text) {
-		boolean checked = Boolean.parseBoolean(text);
-				
-		logger.debug("before: " + element.getAttribute("checked"));
-		element.click();
-		logger.debug("after: " + element.getAttribute("checked"));		
+		String checked = element.getAttribute("checked");
+		
+		if (checked == null) {
+			checked = "false";
+		}
+		
+		if (!checked.equals(text)) {
+			element.click();
+		}
 	}
 	
 	protected void fillSelectField(WebElement element, String text) {
@@ -420,6 +443,7 @@ public class CineFilesIT {
 			}
 			
 			if (matchSpanElement != null) {
+				logger.debug("found term " + value);
 				matchSpanElement.click();
 			}
 			else {
@@ -429,6 +453,7 @@ public class CineFilesIT {
 				WebElement firstAuthorityItem = addToPanelElement.findElement(By.tagName("li"));
 				
 				firstAuthorityItem.click();
+				pause(ADD_TERM_PAUSE);
 			}
 		}
 	}
