@@ -1403,7 +1403,8 @@ https://source.collectionspace.org/collection-space/LICENSE.txt
 					summary: "{globalBundle}.messageBase.search-summary",
 					recordtype: "{globalBundle}.messageBase.search-recordtype",
 					namespace: "{globalBundle}.messageBase.search-namespace",
-					"summarylist.updatedAt": "{globalBundle}.messageBase.search-updatedAt"
+					"summarylist.updatedAt": "{globalBundle}.messageBase.search-updatedAt",
+					"summarylist.createdAt": "{globalBundle}.messageBase.search-createdAt"
 				},
 				listeners: {
 					ready: "{loadingIndicator}.events.hideOn.fire"
@@ -1495,7 +1496,8 @@ https://source.collectionspace.org/collection-space/LICENSE.txt
 					summary: "{globalBundle}.messageBase.search-summary",
 					recordtype: "{globalBundle}.messageBase.search-recordtype",
 					namespace: "{globalBundle}.messageBase.search-namespace",
-					"summarylist.updatedAt": "{globalBundle}.messageBase.search-updatedAt"
+					"summarylist.updatedAt": "{globalBundle}.messageBase.search-updatedAt",
+					"summarylist.createdAt": "{globalBundle}.messageBase.search-createdAt"
 				},
 				selectors: {
 					mainSearch: "{pageBuilder}.options.selectors.advancedSearch"

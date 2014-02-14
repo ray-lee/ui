@@ -239,7 +239,7 @@ cspace = cspace || {};
             pagerAfterRender: null
         },
         //columnList: ["number", "summary", "recordtype", "summarylist.updatedAt"],
-        columnList: ["number", "summary", "recordtype", "namespace", "summarylist.updatedAt"],
+        columnList: ["number", "summary", "recordtype", "namespace", "summarylist.updatedAt", "summarylist.createdAt"],
         resultsSelectable: false,
         listeners: {
             primaryRecordCreated: "{that}.primaryRecordCreated",

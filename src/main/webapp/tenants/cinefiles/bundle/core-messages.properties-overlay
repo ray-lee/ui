@@ -112,3 +112,6 @@ collection-object-filmSubjectLabel: Film Subject
 collection-object-docLanguagesLabel: Document Language
 collection-object-docLanguageLabel: Document Language
 collection-object-sourceLabel: Source
+
+# Search
+search-createdAt: Created At
