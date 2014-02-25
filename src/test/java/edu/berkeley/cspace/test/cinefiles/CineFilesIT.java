@@ -1,4 +1,4 @@
-package edu.berkeley.cspace.cinefiles;
+package edu.berkeley.cspace.test.cinefiles;
 
 import java.util.List;
 import java.util.Map;

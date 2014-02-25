@@ -146,6 +146,18 @@
   	  <version>6.8.1</version>
   	  <scope>test</scope>
   	</dependency>
+    <dependency>
+      <groupId>org.antlr</groupId>
+      <artifactId>stringtemplate</artifactId>
+      <version>4.0.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>de.sven-jacobs</groupId>
+      <artifactId>loremipsum</artifactId>
+      <version>1.0</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   <build>
     <finalName>cspace-ui</finalName>
@@ -171,17 +183,62 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
         <version>2.16</version>
-        <configuration>
-          <excludes>
-            <exclude>**/CineFilesIT.java</exclude>
-          </excludes>
-        </configuration>
         <executions>
-          <execution>
+<!--           <execution>
+            <id>integration-test-core</id>
             <goals>
               <goal>integration-test</goal>
+            </goals>
+            <configuration>
+              <systemPropertyVariables>
+                <tenantName>core</tenantName>
+                <user>admin@core.collectionspace.org</user>
+              </systemPropertyVariables>
+              <summaryFile>target/failsafe-reports/failsafe-summary-core.xml</summaryFile>
+            </configuration>
+          </execution>
+          <execution>
+            <id>integration-test-lifesci</id>
+            <goals>
+              <goal>integration-test</goal>
+            </goals>
+           <configuration>
+              <systemPropertyVariables>
+                <tenantName>lifesci</tenantName>
+                <user>admin@lifesci.collectionspace.org</user>
+              </systemPropertyVariables>
+              <summaryFile>target/failsafe-reports/failsafe-summary-lifesci.xml</summaryFile>
+            </configuration>
+          </execution>
+ -->          <execution>
+            <id>integration-test-cinefiles</id>
+            <goals>
+              <goal>integration-test</goal>
+            </goals>
+            <configuration>
+              <excludes>
+                <exclude>**/CollectionSpaceIT.java</exclude>
+                <exclude>**/cinefiles/*.java</exclude>
+              </excludes>
+              <systemPropertyVariables>
+                <tenantName>cinefiles</tenantName>
+                <user>admin@cinefiles.cspace.berkeley.edu</user>
+              </systemPropertyVariables>
+              <summaryFile>target/failsafe-reports/failsafe-summary-cinefiles.xml</summaryFile>
+            </configuration>
+          </execution>
+          <execution>
+            <id>verify</id>
+            <goals>
               <goal>verify</goal>
             </goals>
+            <configuration>
+              <summaryFiles>
+ <!--                <summaryFile>target/failsafe-reports/failsafe-summary-core.xml</summaryFile>
+                <summaryFile>target/failsafe-reports/failsafe-summary-lifesci.xml</summaryFile>
+ -->                <summaryFile>target/failsafe-reports/failsafe-summary-cinefiles.xml</summaryFile>
+              </summaryFiles>
+            </configuration>
           </execution>
         </executions>
       </plugin>
