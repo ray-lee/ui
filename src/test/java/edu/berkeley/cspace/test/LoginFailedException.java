@@ -1,6 +1,6 @@
 package edu.berkeley.cspace.test;
 
-public class LoginFailedException extends Exception {
+public class LoginFailedException extends CollectionSpaceDriverException {
 	private static final long serialVersionUID = 1L;
 
 	public LoginFailedException(String message) {

@@ -3,12 +3,14 @@ package edu.berkeley.cspace.test;
 import static edu.berkeley.cspace.test.UIConstants.*;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang.StringUtils;
@@ -46,6 +48,8 @@ public class CollectionSpaceDriver {
 	public static final long ADD_TERM_PAUSE = 1;
 	
 	private WebDriver driver;
+	private Random random;
+	SimpleDateFormat calendarDateFormatter;
 	
 	private String baseUrl = DEFAULT_BASE_URL;
 	private String tenantName = DEFAULT_TENANT_NAME;
@@ -54,6 +58,9 @@ public class CollectionSpaceDriver {
 	private Page landingPage = DEFAULT_LANDING_PAGE;
 
 	public CollectionSpaceDriver() {
+		random = new Random();
+		calendarDateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+
 		createWebDriver();
 		configureWebDriver();
 	}
@@ -996,7 +1003,7 @@ public class CollectionSpaceDriver {
 		
 		// Choose an option randomly.
 		
-		int index = (int) Math.floor(Math.random() * displayValues.size());
+		int index = random.nextInt(displayValues.size());
 		
 		return displayValues.get(index);
 	}
@@ -1026,15 +1033,15 @@ public class CollectionSpaceDriver {
 		int numLines;
 		
 		if (multiline) {
-			numLines = (int) Math.floor(Math.random() * 5) + 1;
+			numLines = random.nextInt(5) + 1;
 		}
 		else {
 			numLines = 1;
 		}
 		
 		for (int i=0; i<numLines; i++) {
-			int numWords = (int) Math.floor(Math.random() * 5) + 1;
-			int startIndex = (int) Math.floor(Math.random() * 50);
+			int numWords = random.nextInt(5) + 1;
+			int startIndex = random.nextInt(50);
 			
 			lines.add(generator.getWords(numWords, startIndex));
 		}
@@ -1050,7 +1057,7 @@ public class CollectionSpaceDriver {
 	public String generateNumericValue() {
 		// Return a random number between 1 and 200.
 
-		int number = (int) Math.floor(Math.random() * 200) + 1;
+		int number = random.nextInt(200) + 1;
 
 		return Integer.toString(number);
 	}
@@ -1063,7 +1070,7 @@ public class CollectionSpaceDriver {
 	public String generateAutocompleteValue() {
 		// Return "Test " followed by a random number between 1 and 20.
 
-		int number = (int) Math.floor(Math.random() * 20) + 1;
+		int number = random.nextInt(20) + 1;
 
 		return ("Test " + number);
 	}
@@ -1076,18 +1083,18 @@ public class CollectionSpaceDriver {
 	public String generateCalendarDateValue() {
 		// Return a random date between today and about 100 years ago.
 		
-		int days = (int) Math.floor(Math.random() * 100 * 365);
+		int days = random.nextInt(100 * 365);
 		
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DAY_OF_MONTH, -days);
 		
-		return DateFormat.getDateInstance().format(calendar.getTime());		
+		return calendarDateFormatter.format(calendar.getTime());
 	}
 	
 	public String generateYearValue() {
 		// Return a random number between 1900 and 2100.
 		
-		int year = 1900 + (int) Math.floor(Math.random() * 200);
+		int year = 1900 + random.nextInt(201);
 		
 		return Integer.toString(year);
 	}
@@ -1095,7 +1102,7 @@ public class CollectionSpaceDriver {
 	public String generateMonthValue() {
 		// Return a random number between 1 and 12.
 		
-		int month = (int) Math.floor(Math.random() * 12) + 1;
+		int month = random.nextInt(12) + 1;
 		
 		return Integer.toString(month);
 	}
@@ -1104,153 +1111,172 @@ public class CollectionSpaceDriver {
 		// Return a random number between 1 and 28.
 		// (Numbers above 28 may not be valid, depending on the year and month).
 		
-		int day = (int) Math.floor(Math.random() * 28) + 1;
+		int day = random.nextInt(28) + 1;
 		
 		return Integer.toString(day);
 	}
 	
-	/*
-	protected void testSave(Map<String, String> fieldValues) {
-		fillForm(fieldValues);
-		testSaveForm();
+	public void save() throws SaveFailedException {
+		logger.debug("saving");
 		
-		// Pause to let AJAX calls settle down
-		pause(PAGE_LOAD_PAUSE);
-		
-		closeMessageBar();
-		testFormContainsValues(fieldValues);
-	}
-	
-	protected void testSaveForm() {
-		final String saveButtonClassName = "csc-save";
-		WebElement saveButtonElement = null;
+		WebElement saveButton = findElementImmediately(By.className("csc-save"));
+		saveButton.click();
 
-		try {
-			saveButtonElement = driver.findElement(By.className(saveButtonClassName));
-		}
-		catch(NoSuchElementException e) {
-			logger.warn("failed to find save button with class " + saveButtonClassName);
+		waitForSpinner();
+		waitForTermLists();
+
+		String error = findErrorMessageImmediately();
+
+		if (error != null) {
+			logger.debug("save failed with error: " + error);
+			throw new SaveFailedException(error);
 		}
 		
-		if (saveButtonElement != null) {
-			saveButtonElement.click();
-		}
-
-		driver.manage().timeouts().implicitlyWait(SAVE_TIMEOUT, TimeUnit.SECONDS);
-
-		try {
-			WebElement messageElement = driver.findElement(By.className("csc-messageBar-message"));
-			String messageText = messageElement.getText();
-			Assert.assertTrue(messageText.contains("success"), "save should succeed without error (" + messageText + ")");
-		}
-		catch(NoSuchElementException e) {
-			Assert.fail("save did not complete within " + SAVE_TIMEOUT + " seconds");
-		}
-		finally {
-			driver.manage().timeouts().implicitlyWait(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
-		}
+		logger.debug("save complete");
 	}
 	
-	protected void testFormContainsValues(Map<String, String> fieldValues) {
-		for (String className : fieldValues.keySet()) {
-			testFieldHasValue(className, fieldValues.get(className));
-		}
+	/**
+	 * Get the values of all editable fields in a record editor.
+	 * 
+	 * @return
+	 */
+	public Map<String, Object> getAllFieldValues() {
+		WebElement recordEditor = driver.findElement(By.className("csc-recordEditor-renderer-container"));
+
+		return getAllFieldValues(recordEditor);
 	}
 	
-	protected void testFieldHasValue(String className, String value) {
+	public Map<String, Object> getAllFieldValues(WebElement context) {
+		Map<String, Object> values = new LinkedHashMap<String, Object>();
+		
+		for (String className : findAllFields(context)) {
+			Object value = this.getFieldValue(context, className);
+			values.put(className, value);
+		}
+		
+		return values;
+	}
+	
+	public Object getFieldValue(String className) {
+		WebElement recordEditor = driver.findElement(By.className("csc-recordEditor-renderer-container"));
+
+		return getFieldValue(recordEditor, className);
+	}
+
+	public Object getFieldValue(WebElement context, String className) {
+		logger.debug("getting value of " + className);
+
 		WebElement element = null;
+		List<WebElement> elements = findElementsImmediately(context, By.className(className));
 		
-		List<WebElement> elements = driver.findElements(By.className(className));
-		
-		if (elements.size() > 1) {
-			Assert.fail("multiple fields found for class " + className);
-		}
-		else if (elements.size() < 1) {
-			Assert.fail("no field found for class " + className);
+		if (elements.size() == 0) {
+			logger.warn("no field found for class " + className);
 		}
 		else {
+			if (elements.size() > 1) {
+				logger.warn("multiple fields found for class " + className);
+			}
+
 			element = elements.get(0);
 		}
 		
-		if (element != null) {		
+		Object value = null;
+		
+		if (element != null) {
 			if (isCheckbox(element)) {
-				testCheckboxHasValue(className, element, value);
+				value = getCheckboxValue(element);
 			}
 			else if (isSelect(element)) {
-				testSelectFieldHasValue(className, element, value);
+				value = getSelectFieldDisplayValue(element);
 			}
 			else if (isAutocomplete(element)) {
-				testAutocompleteFieldHasValue(className, element, value);
+				value = getAutocompleteFieldValue(element);
+			}
+			else if (isStructuredDate(element)) {
+				value = getStructuredDateFieldValue(element);
 			}
 			else if (isText(element)) {
-				testTextFieldHasValue(className, element, value);
+				value = getTextFieldValue(element);
 			}
 			else {
 				logger.warn("unknown field type for class " + className);
 			}
 		}
+		
+		return value;
 	}
 	
-	protected void testCheckboxHasValue(String className, WebElement element, String expectedValue) {
-		String currentValue = element.getAttribute("checked");
-		
-		if (currentValue == null) {
-			currentValue = "false";
-		}
-		
-		Assert.assertEquals(currentValue, expectedValue, "incorrect value for field " + className);
+	public String getCheckboxValue(WebElement element) {
+		String checked = element.getAttribute("checked");
+		boolean currentCheckedState = (checked != null);
+
+		return Boolean.toString(currentCheckedState);
 	}
 	
-	protected void testSelectFieldHasValue(String className, WebElement element, String expectedValue) {
+	public String getSelectFieldDisplayValue(WebElement element) {
 		WebElement selectedOptionElement = null;
+		String currentValue = null;
 		
-		for (WebElement candidateOptionElement : element.findElements(By.tagName("option"))) {
+		for (WebElement candidateOptionElement : findElementsImmediately(element, By.tagName("option"))) {
 			if (candidateOptionElement.isSelected()) {
 				selectedOptionElement = candidateOptionElement;
 				break;
 			}
 		}
 		
-		if (selectedOptionElement == null) {
-			Assert.fail("no value selected for field " + className);
+		if (selectedOptionElement != null) {
+			currentValue = selectedOptionElement.getText();
 		}
 		else {
-			String currentValue = selectedOptionElement.getText();
-
-			Assert.assertEquals(currentValue, expectedValue, "incorrect value for field " + className);
+			logger.warn("no selected option found");
 		}
+		
+		return currentValue;
 	}
 
-	protected void testAutocompleteFieldHasValue(String className, WebElement element, String expectedValue) {
-		WebElement autocompleteInputElement = findSiblingAutocompleteInputElement(element);
+	public String getAutocompleteFieldValue(WebElement element) {
+		String currentValue = null;
+		WebElement autocompleteInputElement = findFollowingSiblingAutocompleteInputElement(element);
 		
 		if (autocompleteInputElement != null) {
-			String currentValue = autocompleteInputElement.getAttribute("value");
-
-			Assert.assertEquals(currentValue, expectedValue, "incorrect value for field " + className);
+			currentValue = autocompleteInputElement.getAttribute("value");
 		}
+		
+		return currentValue;
+	}
+	
+	public Map<String, String> getStructuredDateFieldValue(WebElement element) {
+		element.click();
+
+		// Wait for term lists in the structured date popup to load
+		waitForTermLists();
+
+		WebElement popupContainer = findFollowingSiblingElementByClass(element, "csc-structuredDate-popup-container");
+		Map<String, String> currentValues = new LinkedHashMap<String, String>();
+		
+		for (String className : findAllFields(popupContainer)) {
+			String currentValue = (String) getFieldValue(popupContainer, className);			
+			currentValues.put(className, currentValue);
+		}
+		
+		return currentValues;
 	}
 
-	protected void testTextFieldHasValue(String className, WebElement element, String expectedValue) {
+	public String getTextFieldValue(WebElement element) {
 		String tagName = element.getTagName();
 		String currentValue = "";
 		
-		if (tagName.equalsIgnoreCase("textarea")) {
-			currentValue = element.getText();
-		}
-		else {
+//		if (tagName.equalsIgnoreCase("textarea")) {
+//			currentValue = element.getText();
+//		}
+//		else {
 			currentValue = element.getAttribute("value");
-		}
+//		}
 
-		Assert.assertEquals(currentValue, expectedValue, "incorrect value for field " + className);
+		return currentValue;
 	}
-	
-	protected void fillForm(Map<String, String> fieldValues) {
-		for (String className : fieldValues.keySet()) {
-			fillField(className, fieldValues.get(className));
-		}
-	}
-	
+
+	/*
 	protected void clearField(String className) {
 		WebElement element = null;
 		
@@ -1265,9 +1291,7 @@ public class CollectionSpaceDriver {
 			element.clear();
 		}
 	}
-	
-	
-	
+
  */
 	
 	public WebElement findPreviousSiblingElementByTag(WebElement element, String tagName) {

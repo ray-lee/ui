@@ -4,7 +4,7 @@ import java.util.Map;
 
 import org.testng.annotations.Test;
 
-public class CatalogingIT extends CollectionSpaceIT {
+public class LocationIT extends CollectionSpaceIT {
 
 	/**
 	 * Tests that all editable fields are successfully saved.
@@ -15,14 +15,14 @@ public class CatalogingIT extends CollectionSpaceIT {
 	 */
 	@Test(dependsOnMethods = { "testLogin" })
 	public void testAllFields() throws SaveFailedException {
-		testAllFields(Page.CATALOGING);
+		testAllFields(Page.LOCATION);
 	}
 	
 	@Override
 	public Map<String, Object> getExpectedAfterSaveFieldValues(Map<String, Object> beforeSaveValues) {
 		Map<String, Object> values = super.getExpectedAfterSaveFieldValues(beforeSaveValues);
 
-		values.put("csc-dimension-valueDate", getExpectedCalendarDate((String) values.get("csc-dimension-valueDate")));
+		values.put("csc-location-conditionNoteDate", getExpectedCalendarDate((String) values.get("csc-location-conditionNoteDate")));
 
 		return values;
 	}
