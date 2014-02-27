@@ -180,11 +180,18 @@ public class CollectionSpaceDriver {
 		waitForSpinner();
 		waitForTermLists();
 	}
-
+	
 	/**
 	 * Blocks until the spinner (loading indicator) is no longer visible.
 	 */
 	public void waitForSpinner() {
+		waitForSpinnerWithTimeout(DEFAULT_TIMEOUT);
+	}
+
+	/**
+	 * Blocks until the spinner (loading indicator) is no longer visible.
+	 */
+	public void waitForSpinnerWithTimeout(long timeoutSecs) {
 		logger.debug("waiting for spinner");
 
 		// This is a bit brittle, but the best I could come up with.
@@ -192,7 +199,7 @@ public class CollectionSpaceDriver {
 		// attribute. Use the CSS3 *= selector for this, which Selenium/Firefox
 		// appears to support.
 		
-		driver.findElement(By.cssSelector("." + LOADING_INDICATOR_CLASSNAME + "[style*=\"display: none;\"]"));		
+		findElementWithTimeout(timeoutSecs, By.cssSelector("." + LOADING_INDICATOR_CLASSNAME + "[style*=\"display: none;\"]"));		
 	}
 	
 	/**
@@ -247,7 +254,7 @@ public class CollectionSpaceDriver {
 		}
 	}
 
-	public WebElement findElementWithTimeout(int timeoutSeconds, By by) {
+	public WebElement findElementWithTimeout(long timeoutSeconds, By by) {
 		driver.manage().timeouts().implicitlyWait(timeoutSeconds, TimeUnit.SECONDS);
 		WebElement foundElement = driver.findElement(by);
 		driver.manage().timeouts().implicitlyWait(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
@@ -378,7 +385,13 @@ public class CollectionSpaceDriver {
 		for (WebElement candidateElement : candidateElements) {
 			if (isEditable(candidateElement)) {
 				String className = getFieldName(candidateElement);
-				fields.add(className);
+				
+				if (StringUtils.isEmpty(className)) {
+					logger.warn("could not determine field name for element: " + candidateElement);
+				}
+				else {
+					fields.add(className);
+				}
 			}
 		}
 		
@@ -609,7 +622,15 @@ public class CollectionSpaceDriver {
 	 *                false otherwise
 	 */
 	public boolean isNumericText(WebElement element) {
-		final List<String> expectedNames = Arrays.asList("value", "number", "count");
+		// This is intentionally conservative, because for most fields,
+		// an error is displayed immediately if it's a numeric field
+		// and an invalid number is entered. That error is handled
+		// properly, so this function is intended to be used to find
+		// fields that are numeric, but not validated immediately, at
+		// which point it's difficult or impossible to figure out 
+		// which field is causing the error.
+		
+		final List<String> expectedNames = Arrays.asList("qualifiervalue");
 		
 		String className = element.getAttribute("class").toLowerCase();
 		String name = element.getAttribute("name").toLowerCase();
@@ -929,32 +950,73 @@ public class CollectionSpaceDriver {
 		
 		element.click();
 		element.sendKeys(value);
-		element.sendKeys("\t");
 		
 		if (generated) {
 			// If the value was generated, make sure there were no
 			// validation errors. Allow 1 second for the error to
-			// appear.
+			// appear. This handles validation that happens while a
+			// value is being typed.
 			
 			String error = findErrorMessageWithTimeout(1);
 			
 			if (error != null) {
+				String retryValue = null;
+				
 				if (error.contains("number you have entered is invalid")) {
 					// The field requires a number.
 					
-					closeMessageBar();
-					
-					value = generateNumericValue();
-
-					element.click();
-					element.clear();
-					element.sendKeys(value);
-					element.sendKeys("\t");
+					retryValue = generateNumericValue();
 				}
 				else {
 					// Some other error.
 					
 					logger.warn("unexpected field validation error: " + error);
+				}
+				
+				if (retryValue != null) {
+					value = retryValue;
+					
+					closeMessageBar();
+
+					element.click();
+					element.clear();
+					element.sendKeys(value);
+				}
+			}
+		}
+		
+		element.sendKeys("\t");
+		
+		if (generated) {
+			// If the value was generated, make sure there were no
+			// validation errors. This handles validation that
+			// happens after tabbing out of a field.
+			
+			String error = findErrorMessageImmediately();
+			
+			if (error != null) {
+				String retryValue = null;
+				
+				if (error.contains("URL has invalid format")) {
+					// The field requires a URL.
+					
+					retryValue = generateUrlValue();
+				}
+				else {
+					// Some other error.
+					
+					logger.warn("unexpected field validation error: " + error);
+				}
+				
+				if (retryValue != null) {
+					value = retryValue;
+
+					closeMessageBar();
+
+					element.click();
+					element.clear();
+					element.sendKeys(retryValue);
+					element.sendKeys("\t");
 				}
 			}
 		}
@@ -1116,13 +1178,17 @@ public class CollectionSpaceDriver {
 		return Integer.toString(day);
 	}
 	
+	public String generateUrlValue() {
+		return "http://www.collectionspace.org";
+	}
+	
 	public void save() throws SaveFailedException {
 		logger.debug("saving");
 		
 		WebElement saveButton = findElementImmediately(By.className("csc-save"));
 		saveButton.click();
 
-		waitForSpinner();
+		waitForSpinnerWithTimeout(SAVE_TIMEOUT);
 		waitForTermLists();
 
 		String error = findErrorMessageImmediately();

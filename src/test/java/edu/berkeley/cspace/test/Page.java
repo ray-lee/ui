@@ -10,7 +10,9 @@ public enum Page {
 	ORGANIZATION	("organization.html"),
 	PLACE			("place.html"),
 	WORK			("work.html"),
-	CITATION		("citation.html");
+	CITATION		("citation.html"),
+	GROUP			("group.html"),
+	MEDIA			("media.html");
 	
 	private final String path;
 	
