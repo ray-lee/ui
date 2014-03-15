@@ -42,23 +42,45 @@ cspace = cspace || {};
 
     fluid.registerNamespace("cspace.search");
 
-    cspace.search.colDefsGenerator = function (columnList, recordType, vocab, selectable, labels) {
-        var colDefs = fluid.transform(columnList, function (key, index) {
+    cspace.search.colDefsGenerator = function (columnList, recordType, vocab, selectable, labels, urls) {
+       var colDefs = fluid.transform(columnList, function (key, index) {
             var comp;
             if (key === "number") {
-                comp = {
-                    target: "${*.recordtype}.html?csid=${*.csid}",
-                    linktext: "${*.number}",
-                    // CSPACE-6339: If the item has a namespace (vocabulary), append 
-                    // it as a parameter to the URL, using a decorator.
-                    decorators: {
-                        type: "fluid",
-                        func: "cspace.search.vocabParamAppender",
-                        options: {
-                            vocab: "${*.namespace}"
-                        }
-                    }
-                };
+				// This almost works great, but the record that's passed in 
+				// (by expandColumnDefs in CSpaceInfusion.js) doesn't always
+				// correspond to the actual row being displayed (!). For
+				// example, when the rows are sorted, they continue to be
+				// passed in as if they had not been sorted.
+				comp = function(record, rowNum) {
+					if (record) {
+	                    var expander = cspace.urlExpander({
+	                        vars: {
+	                            recordType: record.recordtype,
+	                            csid: record.csid,
+	                            vocab: record.namespace ? fluid.stringTemplate(urls.vocab, {vocab: record.namespace}) : ""
+	                        }
+	                    });
+	                    var target = expander(urls.pivot);
+
+						return {
+			                target: target,
+			                linktext: record.number
+						}
+					}
+				};
+                // comp = {
+                //     target: "${*.recordtype}.html?csid=${*.csid}",
+                //     linktext: "${*.number}",
+                //     // CSPACE-6339: If the item has a namespace (vocabulary), append 
+                //     // it as a parameter to the URL, using a decorator.
+                //     decorators: {
+                //         type: "fluid",
+                //         func: "cspace.search.vocabParamAppender",
+                //         options: {
+                //             vocab: "${*.namespace}"
+                //         }
+                //     }
+                // };
             } else if (key !== "csid") {
                 comp = {value: "${*." + key + "}"};
             }
@@ -336,7 +358,7 @@ cspace = cspace || {};
                         expander: {
                             type: "fluid.deferredCall",
                             func: "cspace.search.colDefsGenerator",
-                            args: ["{searchView}.options.columnList", "{searchView}.model.searchModel.recordType", "{searchView}.model.searchModel.vocab", "{searchView}.options.resultsSelectable", "{searchView}.options.strings"]
+                            args: ["{searchView}.options.columnList", "{searchView}.model.searchModel.recordType", "{searchView}.model.searchModel.vocab", "{searchView}.options.resultsSelectable", "{searchView}.options.strings", "{searchView}.options.urls"]
                         }
                     },
                     listeners: {
