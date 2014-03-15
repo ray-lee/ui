@@ -44,17 +44,20 @@ cspace = cspace || {};
 
     cspace.search.colDefsGenerator = function (columnList, recordType, vocab, selectable, labels) {
         var colDefs = fluid.transform(columnList, function (key, index) {
-            var comp,
-                vocabParam = "";
-            if (vocab && vocab !== "all") {
-                vocabParam = "&" + $.param({
-                    vocab: vocab
-                });
-            }
+            var comp;
             if (key === "number") {
                 comp = {
-                    target: "${*.recordtype}.html?csid=${*.csid}" + vocabParam,
-                    linktext: "${*.number}"
+                    target: "${*.recordtype}.html?csid=${*.csid}",
+                    linktext: "${*.number}",
+                    // CSPACE-6339: If the item has a namespace (vocabulary), append 
+                    // it as a parameter to the URL, using a decorator.
+                    decorators: {
+                        type: "fluid",
+                        func: "cspace.search.vocabParamAppender",
+                        options: {
+                            vocab: "${*.namespace}"
+                        }
+                    }
                 };
             } else if (key !== "csid") {
                 comp = {value: "${*." + key + "}"};
@@ -76,6 +79,28 @@ cspace = cspace || {};
             };
         }
         return colDefs;
+    };
+    
+    cspace.search.vocabParamAppender = function(container, options) {
+        var vocab = options.vocab;
+        
+        // Ugh. When the pager expands "${*.namespace}", it converts it to a string,
+        // so if it was undefined, we get "undefined" here. Hopefully there won't
+        // ever be a vocabulary with the shortid "undefined".
+        
+        if (vocab && vocab != "undefined") {
+            var href = container.prop("href");
+            
+            if (href) {
+                var vocabParam = $.param({
+                    vocab: vocab
+                });
+                
+                href = href + "&" + vocabParam;
+            }
+            
+            container.prop("href", href);
+        }
     };
 
     cspace.search.makeModelFilter = function (that) {
