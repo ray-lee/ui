@@ -45,3 +45,9 @@ collection-object-photoCreditLabel: Photo Credit
 collection-object-permissionToReproduceLabel: Permission to reproduce granted for noncommercial uses
 collection-object-permissionToReproduceSearchLabel: Permission to reproduce granted for noncommercial uses
 collection-object-bwOrColorLabel: Black & White or Color
+collection-object-valuationInformationLabel: Object Valuation Information
+collection-object-appraisalGroupLabel: Appraisal
+collection-object-appraisalInfoLabel: Appraisal Info
+collection-object-appraisalNoteLabel: Appraisal Note
+collection-object-appraisalSourceLabel: Appraisal Source
+collection-object-appraisalDateLabel: Appraisal Date

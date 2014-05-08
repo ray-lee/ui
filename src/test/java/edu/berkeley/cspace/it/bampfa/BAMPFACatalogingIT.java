@@ -85,6 +85,7 @@ public class BAMPFACatalogingIT extends CollectionSpaceIT {
 	 * <li>Copyright fields should appear (BAMPFA-171)</li>
 	 * <li>Production people should be an autocomplete (BAMPFA-168)</li>
 	 * <li>Black & white or color field should appear (BAMPFA-180)</li>
+	 * <li>Appraisal fields should appear (BAMPFA-179)</li>
 	 * </ul>
 	 */
 	@Test(dependsOnMethods = { "testLogin" })
@@ -212,6 +213,20 @@ public class BAMPFACatalogingIT extends CollectionSpaceIT {
 		
 		WebElement bwOrColorElement = driver.findElementImmediately(By.className("csc-collection-object-bwOrColor"));
 		Assert.assertEquals(elements.size(), 1, "the black & white or color field should be found:");
+		
+		// Appraisal fields should appear (BAMPFA-179)
+		
+		elements = driver.findElementsImmediately(By.className("csc-collection-object-appraisalInfo"));
+		Assert.assertEquals(elements.size(), 1, "the appraisal info field should be found:");
+		
+		elements = driver.findElementsImmediately(By.className("csc-collection-object-appraisalNote"));
+		Assert.assertEquals(elements.size(), 1, "the appraisal note field should be found:");
+
+		elements = driver.findElementsImmediately(By.className("csc-collection-object-appraisalSource"));
+		Assert.assertEquals(elements.size(), 1, "the appraisal source field should be found:");
+
+		elements = driver.findElementsImmediately(By.className("csc-collection-object-appraisalDate"));
+		Assert.assertEquals(elements.size(), 1, "the appraisal date field should be found:");
 	}
 	
 	/**
