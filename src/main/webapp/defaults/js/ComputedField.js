@@ -45,7 +45,7 @@ cspace = cspace || {};
             },
             refresh: {
                 funcName: "cspace.computedField.refresh",
-                args: "{computedField}"
+                args: ["{computedField}", "{arguments}.0"]
             },
             calculateFieldValue: {
                 funcName: "cspace.computedField.calculateFieldValue",
@@ -57,6 +57,10 @@ cspace = cspace || {};
             },
             getFieldListenerNamespace: {
                 funcName: "cspace.computedField.getFieldListenerNamespace",
+                args: "{computedField}"
+            },
+            updateLinkState: {
+                funcName: "cspace.computedField.updateLinkState",
                 args: "{computedField}"
             }
         },
@@ -108,8 +112,8 @@ cspace = cspace || {};
             that.events.onSubmit.removeListener(that.id);
         };
         
-        that.refreshValue = function() {
-            cspace.computedField.refresh(that);
+        that.refreshValue = function(silent) {
+            cspace.computedField.refresh(that, silent);
         }
     };
 
@@ -154,6 +158,16 @@ cspace = cspace || {};
         that.events.onSubmit.addListener(that.refreshValue, that.id);
 
         that.bindModelEvents();
+		
+		that.container.addClass("cs-computedField");
+		that.updateLinkState();
+		
+		// If this is a new record, refresh the computed field immediately. This is necessary because
+		// empty inputs to the computation function could produce a non-empty output.
+		
+		if (!that.model.csid) {
+			that.refreshValue(true);
+		}
     };
 
     /*
@@ -172,19 +186,34 @@ cspace = cspace || {};
             that.applierListenerNamespaces.push(namespace);
         });
 
-        var namespace = that.getFieldListenerNamespace();
+		if (!that.options.readOnly) {
+	        var namespace = that.getFieldListenerNamespace();
         
-        that.applier.modelChanged.addListener(that.fullElPath, function(model) {
-            that.container.val(fluid.get(model, that.fullElPath));
-        }, namespace);
+	        that.applier.modelChanged.addListener(that.fullElPath, function(model) {
+				that.updateLinkState();
+	        }, namespace);
         
-        that.applierListenerNamespaces.push(namespace);      
+	        that.applierListenerNamespaces.push(namespace);
+		}
     };
 
+    cspace.computedField.updateLinkState = function (that) {
+		var value = fluid.get(that.model, that.fullElPath) || "";
+		var calculatedValue = that.calculateFieldValue();
+		
+		if (value != calculatedValue) {
+			console.log(value + ":" + calculatedValue);
+			that.container.addClass("overridden");
+		}
+		else {
+			that.container.removeClass("overridden");
+		}
+    }
+	
     /*
-     * Updates the field value in the model, showing an error message if necessary.
+     * Updates the field value, showing an error message if necessary.
      */
-    cspace.computedField.refresh = function (that) {
+    cspace.computedField.refresh = function (that, silent) {
         that.clearMessage();
 
         /*
@@ -234,7 +263,18 @@ cspace = cspace || {};
              * attempts to navigate away without saving.
              */
             if (newValue != "" || hasDefinedTarget) {
-                that.applier.requestChange(that.fullElPath, newValue);
+                that.container.val(newValue);
+				
+				if (silent) {
+			        that.applier.fireChangeRequest({
+			            path: that.fullElPath,
+			            value: newValue,
+			            silent: true
+			        });
+				}
+				else {
+					that.container.change();
+				}
             }
         }
     }
