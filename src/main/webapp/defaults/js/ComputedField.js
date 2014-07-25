@@ -154,6 +154,19 @@ cspace = cspace || {};
         that.events.onSubmit.addListener(that.refreshValue, that.id);
 
         that.bindModelEvents();
+
+        that.container.addClass("cs-computedField");
+
+        if (false) { // (that.options.readOnly) {
+			that.container.addClass("readonly");
+		}
+		else {
+			var wrapper = $("<div class='field linkable' style='position: relative; padding-left: 0; padding-top: 0'/>").insertAfter(that.container);
+			wrapper.append(that.container);
+			
+			var linkButton = $("<a style='width: 18px; height: 18px; background: url(../images/icnLink.png) no-repeat center center; position: absolute; right: 0' href=\"#\"></a>");
+			wrapper.append(linkButton);
+        }
     };
 
     /*

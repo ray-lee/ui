@@ -1958,6 +1958,9 @@ https://source.collectionspace.org/collection-space/LICENSE.txt
         });
 
         // computedField demands
+        fluid.demands("cspace.computedField.linkButton", "cspace.computedField", {
+            container: "{computedField}.container"
+        });
         fluid.demands("cspace.computedField", "cspace.recordEditor", {
             container: "{arguments}.0",
             mergeAllOptions: [{

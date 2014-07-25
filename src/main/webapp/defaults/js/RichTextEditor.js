@@ -89,7 +89,7 @@ cspace = cspace || {};
 
 		// Create a div that will contain the editable rich text, and add it after this component's container (which should be a textarea or input).
 
-		var editableDiv = $('<div class="richtext" contenteditable="true"></div>').insertAfter(that.container);
+		var editableDiv = $('<div class="field richtext" contenteditable="true"></div>').insertAfter(that.container);
 		var isMultiline = that.container.is("textarea");
 		
 		if (isMultiline) {

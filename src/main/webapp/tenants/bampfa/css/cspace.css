@@ -48,7 +48,7 @@ sup {
     vertical-align: super;}
 
 /* input form selectors */
-input, textarea, select, div.richtext {
+input, textarea, select, div.field {
     -moz-background-clip: padding;
     -webkit-background-clip: padding;
     background-clip: padding-box;
@@ -64,17 +64,17 @@ input, textarea, select, div.richtext {
     box-sizing:border-box;
     -moz-box-sizing:border-box;
     vertical-align: middle;}
-div.richtext {
+div.field {
     background: white;
     overflow-x: hidden;
     white-space: nowrap;
 }
-div.richtext.multiline {
+div.field.multiline {
     white-space: normal;
 }
 select {
     padding:0;}
-table select, table ~ select, table input, table div.richtext {
+table select, table ~ select, table input, table div.field {
     border:none;
     height:19px;
     padding-left:2px;}
@@ -82,17 +82,17 @@ input[type="button"], input[type="submit"], input[type="checkbox"], input[type="
     height:auto;}
 input[type="checkbox"] {
 	padding:0 2px;}
-input[type="text"], input[type="password"], textarea, div.richtext {
+input[type="text"], input[type="password"], textarea, div.field {
     margin: 0;
     width: 95%;
 }
-div.info-column2-50 input[type="text"], div.info-column2-50 input[type="password"], div.info-column2-50 textarea, div.info-column2-50 div.richtext {
+div.info-column2-50 input[type="text"], div.info-column2-50 input[type="password"], div.info-column2-50 textarea, div.info-column2-50 div.field {
     width: 88.5%;
 }
-div.info-column2-50 table input[type="text"], div.info-column2-50 table input[type="password"], div.info-column2-50 table textarea, div.info-column2-50 table div.richtext {
+div.info-column2-50 table input[type="text"], div.info-column2-50 table input[type="password"], div.info-column2-50 table textarea, div.info-column2-50 table div.field {
     width: 100%;
 }
-table input[type="text"], table input[type="password"], table textarea, table div.richtext {
+table input[type="text"], table input[type="password"], table textarea, table div.field {
     width:100%;
     padding-left:2px;}
 input[type="submit"].logout {
@@ -1234,11 +1234,11 @@ table.cs-admin-table td.checkbox {
     width: 100%; 
     padding-top:0; 
     border:none;}
-.content textarea, .content div.richtext.multiline {
+.content textarea, .content div.field.multiline {
     height:75px;
     overflow:auto;
 }
-.content textarea.short, .content div.richtext.multiline.short {
+.content textarea.short, .content div.field.multiline.short {
     height:40px;
 }
 .input-alpha-login {
@@ -2620,4 +2620,19 @@ li.cs-repeatable-repeat .stretched .cs-termList {
 
 .cs-authority #title-bar.docked {
 	background-color: #F3EDF6;
+}
+
+input.cs-computedField {
+	padding-right: 18px;
+}
+
+input.cs-computedField.readonly {
+	background-image: url(../images/icnLinkDisabled.png) !important;
+	background-repeat: no-repeat;
+	background-position: top right;
+}
+
+div.field.linkable input.cs-computedField {
+	border: none;
+	width: 100%;
 }
