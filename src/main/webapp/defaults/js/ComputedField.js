@@ -65,6 +65,7 @@ cspace = cspace || {};
             }
         },
         events: {
+			refreshNewRepeatable: null,
             removeAllListeners: null,
             removeApplierListeners: null,
             onSubmit: null
@@ -100,7 +101,7 @@ cspace = cspace || {};
        
     cspace.computedField.preInit = function (that) {
         that.applierListenerNamespaces = [];
-        
+
         that.removeApplierListeners = function () {
             fluid.each(that.applierListenerNamespaces, function(namespace) {            
                 that.applier.modelChanged.removeListener(namespace);
@@ -110,11 +111,12 @@ cspace = cspace || {};
         that.removeAllListeners = function() {
             that.removeApplierListeners();
             that.events.onSubmit.removeListener(that.id);
+			that.events.refreshNewRepeatable.removeListener(that.id);
         };
         
         that.refreshValue = function(silent) {
             cspace.computedField.refresh(that, silent);
-        }
+        };
     };
 
     cspace.computedField.postInit = function (that) {
@@ -155,7 +157,57 @@ cspace = cspace || {};
             that.fullArgElPaths.push(that.resolveElPath(argElPath));
         });
 
-        that.events.onSubmit.addListener(that.refreshValue, that.id);
+        that.events.onSubmit.addListener(function() {
+			// Refresh the field value when the record is saved. I'm not sure if this is always
+			// a good idea, but it would help in cases where a computed field has the wrong value,
+			// through an import or database update, or for some other reason. This would correct
+			// the value without the user having to modify any of the linked fields.
+			// This should only be done if the computed field is read-only; otherwise, it would
+			// overwrite any manually entered override. 
+			
+			if (that.options.readOnly) {
+				that.refreshValue();
+			}
+		}, that.id);
+		
+		that.events.refreshNewRepeatable.addListener(function() {
+			// If this is the last instance in a repeatable, then it was just created.
+			// Refresh the value, in case empty inputs result in a non-empty output.
+
+			var elPath = that.fullElPath;
+			var parts = elPath.split('.');
+			
+			// Find the index of the repeat instance. This is the last el path component
+			// that is numeric.
+			
+			var repeatIndex = -1;
+			var repeatElPath = '';
+			
+			for (var i=parts.length-1; i>=0; i--) {
+				var part = parts[i];
+				
+				if (part.match(/^\d+$/)) {
+					repeatIndex = parseInt(part);
+					repeatElPath = parts.slice(0, i).join('.');
+					
+					break;
+				}
+			}
+			
+			if (repeatIndex >= 0) {
+				// Check if the index of the repeat instance makes it the last
+				// instance, which means it's the one that was just added.
+				// Refresh the value.
+				
+				var repeatModel = fluid.get(that.model, repeatElPath);
+				
+				if (Array.isArray(repeatModel)) {
+					if (repeatIndex == repeatModel.length - 1) {
+						that.refreshValue(true);
+					}
+				}
+			}
+		}, that.id);
 
         that.bindModelEvents();
 		
@@ -179,8 +231,24 @@ cspace = cspace || {};
         fluid.each(that.fullArgElPaths, function(fullArgElPath) {
             var namespace = that.getArgListenerNamespace(fullArgElPath);
             
-            that.applier.modelChanged.addListener(fullArgElPath, function(model) {
-                that.refresh();
+            that.applier.modelChanged.addListener(fullArgElPath, function(model, oldModel, changeRequests) {
+				// Test the path of the change.
+				
+				// If it's empty, the model is being completely replaced after a save, and there's no
+				// need to recompute the field values. For fields that are not read-only, and were
+				// overridden, recomputing would overwrite the overridden value that was just saved.
+				
+				// If it's a parent of the root of this field's el path, a repeating field or field 
+				// group is being replaced because of an addition or deletion. There is also no need
+				// to recompute. Recomputing would re-add the field or group being deleted, undermining
+				// the deletion.
+				
+				var changeRequest = changeRequests[0];
+				var path = changeRequest.path;
+				
+				if (path != "" && that.options.root.substring(0, path.length + 1) != (path + ".")) {
+                	that.refresh();
+				}
             }, namespace);
 
             that.applierListenerNamespaces.push(namespace);
@@ -189,7 +257,7 @@ cspace = cspace || {};
 		if (!that.options.readOnly) {
 	        var namespace = that.getFieldListenerNamespace();
         
-	        that.applier.modelChanged.addListener(that.fullElPath, function(model) {
+	        that.applier.modelChanged.addListener(that.fullElPath, function(model, oldModel, changeRequests) {
 				that.updateLinkState();
 	        }, namespace);
         
@@ -202,7 +270,6 @@ cspace = cspace || {};
 		var calculatedValue = that.calculateFieldValue();
 		
 		if (value != calculatedValue) {
-			console.log(value + ":" + calculatedValue);
 			that.container.addClass("overridden");
 		}
 		else {
@@ -212,71 +279,57 @@ cspace = cspace || {};
 	
     /*
      * Updates the field value, showing an error message if necessary.
+     * If silent is true, the update will not result in the page being considered modified
+     * if the user attempts to navigate away without saving. This is useful for initializing
+     * computed fields when records are created, or new repeating field instances are created.
      */
     cspace.computedField.refresh = function (that, silent) {
         that.clearMessage();
 
+        var newValue;
+
+        try {
+            newValue = that.calculateFieldValue();
+        }
+        catch (error) {
+            var message = fluid.stringTemplate(that.lookupMessage("errorCalculating"), {
+                label: that.labelText,
+                status: error.message
+            });
+        
+            that.showMessage(message);
+            return;
+        }
+    
+        if (!that.validate(newValue, that.invalidCalculationMessage)) {
+            return;
+        }
+    
         /*
-         * If all arguments are undefined, and the target field is undefined, don't do anything.
-         * This is a (probably overly simple) way to handle the case where a computed field exists
-         * inside a repeatable, and an instance of the repeatable is deleted. In that case, the
-         * model is updated with a shorter array, and we might be running in response to that
-         * update. We don't want to re-lengthen the array, thereby undermining the deletion.
-         * See UCJEPS-362. 
+         * If the new value is empty, and the target field is undefined, don't do anything.
+         * By setting the value, the change detector would think that the page is modified,
+         * because the field went from undefined to empty string; but to the user, they're the
+         * same thing. This prevents an apparently spurious confirmation dialog, if the user
+         * attempts to navigate away without saving.
          */
-        var hasDefinedArg = false;
-        
-        for (var i=0; i<that.fullArgElPaths.length; i++) {
-            if (typeof(fluid.get(that.model, that.fullArgElPaths[i])) !== 'undefined') {
-                hasDefinedArg = true;
-                break;
-            }
-        }
-
         var hasDefinedTarget = typeof(fluid.get(that.model, that.fullElPath)) !== 'undefined';
-
-        if (hasDefinedArg || hasDefinedTarget) {
-            var newValue;
-
-            try {
-                newValue = that.calculateFieldValue();
-            }
-            catch (error) {
-                var message = fluid.stringTemplate(that.lookupMessage("errorCalculating"), {
-                    label: that.labelText,
-                    status: error.message
-                });
-            
-                that.showMessage(message);
-                return;
-            }
-        
-            if (!that.validate(newValue, that.invalidCalculationMessage)) {
-                return;
-            }
-        
-            /*
-             * If the new value is empty, and the target field is undefined, don't do anything.
-             * By setting the value, the change detector would think that the page is modified,
-             * because the field went from undefined to empty string; but to the user, they're the
-             * same thing. This prevents an apparently spurious confirmation dialog, if the user
-             * attempts to navigate away without saving.
-             */
-            if (newValue != "" || hasDefinedTarget) {
-                that.container.val(newValue);
-				
-				if (silent) {
-			        that.applier.fireChangeRequest({
-			            path: that.fullElPath,
-			            value: newValue,
-			            silent: true
-			        });
-				}
-				else {
-					that.container.change();
-				}
-            }
-        }
+		
+        if (newValue == "" && !hasDefinedTarget) {
+			return;
+		}
+		
+        that.container.val(newValue);
+		
+		if (silent) {
+	        that.applier.fireChangeRequest({
+	            path: that.fullElPath,
+	            value: newValue,
+	            silent: true
+	        });
+		}
+		else {
+			that.container.change();
+		}
     }
 
     /*

@@ -1987,6 +1987,7 @@ https://source.collectionspace.org/collection-space/LICENSE.txt
                 model: "{repeatableImpl}.model",
                 events: {
                     repeatableOnRefreshView: "{repeatableImpl}.events.onRefreshView",
+                    repeatableAfterAdd: "{repeatableImpl}.events.afterAdd",
                     recordEditorOnRenderTree: "{recordEditor}.events.onRenderTree",
                     onSubmit: "{recordEditor}.saver.events.beforeSave",
                     recordEditorAfterSave: "{recordEditor}.events.afterSave",
@@ -1994,6 +1995,7 @@ https://source.collectionspace.org/collection-space/LICENSE.txt
                 },
                 listeners: {
                     repeatableOnRefreshView: "{computedField}.events.removeAllListeners.fire",
+                    repeatableAfterAdd: "{computedField}.events.refreshNewRepeatable.fire",
                     recordEditorOnRenderTree: "{computedField}.events.removeAllListeners.fire",
                     recordEditorAfterSave: {
                         listener: "{computedField}.events.removeAllListeners.fire",
