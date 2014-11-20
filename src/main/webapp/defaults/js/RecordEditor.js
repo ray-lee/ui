@@ -1166,10 +1166,10 @@ cspace = cspace || {};
                             resolver: "{permissionsResolver}",
                             allOf: [{
                                 target: "{cspace.relatedRecordsTab}.options.related",
-                                permission: "update"
+                                permission: "read"
                             }, {
                                 target: "{cspace.relatedRecordsTab}.options.primary",
-                                permission: "update"
+                                permission: "read"
                             }],
                             primaryModel: "{globalModel}.model.primaryModel",
                             relatedModel: "{cspace.recordEditor}.model"
