@@ -1,0 +1,13 @@
+#Login
+
+login-login: admin@lhmc.collectionspace.org
+login-rologin: reader@lhmc.collectionspace.org
+
+login-current-info-1: Welcome to the
+login-current-info-2: demo site, currently running version 
+login-current-info-3 of the software. This demo represents a draft of the Local History and Material Culture profile, with procedures and fields configured to support those collection types. To learn more about how you can contribute to the continued evolution of this profile, visit
+login-current-info-4: 
+
+login-footerFirst: A tenant configured for use with \t
+login-footerLink: life sciences collections
+login-footerLast:  is also available. In the future, additional demo tenants will be created to show configurations specific to art, digital and variable media, and anthropology.
