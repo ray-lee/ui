@@ -11,3 +11,15 @@ login-current-info-4:
 login-footerFirst: A tenant configured for use with \t
 login-footerLink: life sciences collections
 login-footerLast:  is also available. In the future, additional demo tenants will be created to show configurations specific to art, digital and variable media, and anthropology.
+
+acquisition-accessionDateGroupLabel: Accessioned
+acquisition-acquisitionAuthorizerLabel: Accessioned by
+acquisition-acquisitionDateGroupLabel: Received Date
+acquisition-Label: Received by
+acquisition-acquisitionMethodLabel: Received as
+acquisition-acquisitionNoteLabel: Notes
+acquisition-acquisitionProvisosLabel: Restrictions
+acquisition-acquisitionReferenceNumberLabel: Accession #
+acquisition-ownerLabel: Source
+acquisition-creditLineLabel: Credit line
+acquisition-objectPurchasePriceValueLabel: Price or Value
