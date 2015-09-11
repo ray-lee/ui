@@ -23,3 +23,20 @@ acquisition-acquisitionReferenceNumberLabel: Accession #
 acquisition-ownerLabel: Source
 acquisition-creditLineLabel: Credit line
 acquisition-objectPurchasePriceValueLabel: Price or Value
+
+intake-currentOwnerLabel: Source
+intake-depositorsRequirementsLabel: Restrictions
+intake-entryDateLabel: Received date
+intake-entryMethodLabel: Received as
+intake-entryNoteLabel: Notes
+intake-returnDateLabel: Return by
+intake-insurancePolicyNumberLabel: Policy#
+intake-insuranceRenewalDateLabel: Policy Expiration Date
+intake-insurerLabel: Insurance Company
+intake-currentLocationLabel: Interim locations
+intake-locationDateLabel: Inventoried date
+intake-conditionCheckDateLabel: Condition date
+intake-conditionCheckNoteLabel: Condition notes
+intake-conditionCheckerOrAssessorLabel: Condition by
+
+
