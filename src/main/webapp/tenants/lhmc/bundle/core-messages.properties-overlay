@@ -39,4 +39,25 @@ intake-conditionCheckDateLabel: Condition date
 intake-conditionCheckNoteLabel: Condition notes
 intake-conditionCheckerOrAssessorLabel: Condition by
 
-
+person-termDisplayNameLabel: Full Name
+preferredPA-foreNameLabel: First Name
+preferredPA-surNameLabel: Last Name
+preferredPA-titleLabel: Title
+person-birthDateGroupLabel: Born
+person-deathDateGroupLabel: Died
+person-birthPlaceLabel: Where
+person-deathPlaceLabel: Where
+person-nationalityLabel: Nationality
+person-occupationLabel: Occupation sphere of activity
+person-bioNoteLabel: Notes
+contact-emailGroupLabel: E-mail
+contact-emailLabel: E-mail
+contact-faxNumberGroupLabel: Fax
+contact-faxNumberLabel: Number
+contact-webAddressGroupLabel: Website
+contact-webAddressLabel: Website
+contact-addressPlace1Label: Address
+contact-addressMunicipalityLabel: City
+contact-addressStateOrProvinceLabel: St
+contact-addressPostCodeLabel: Zip
+contact-addressCountyLabel: Country
