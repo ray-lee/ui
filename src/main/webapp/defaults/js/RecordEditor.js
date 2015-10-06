@@ -2053,7 +2053,7 @@ cspace = cspace || {};
             },
             urls: cspace.componentUrlBuilder({
                 recordURL: "%tenant/%tname/%recordType/%csid",
-                permissionsUrl: "%tenant/%tname/permission/search?actGrp=CRUDL"
+                permissionsUrl: "%tenant/%tname/permission/search?pageSize=0&actGrp=CRUDL"
             }),
             components: {
                 sourcePermissions: {
