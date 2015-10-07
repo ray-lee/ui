@@ -85,8 +85,8 @@ cspace = cspace || {};
             about: "http://www.collectionspace.org",
             currentRelease: "http://www.collectionspace.org/current_release",
             deploymentRelease: "releaseNotes.html",
-            feedback: "http://wiki.collectionspace.org/display/collectionspace/Release+4.1+Feedback",
-            version: "4.1",
+            feedback: "http://wiki.collectionspace.org/display/collectionspace/Release+4.2+Feedback",
+            version: "4.2",
             deploymentVersion: "UC Berkeley",
             support: "mailto:cspace-support@lists.berkeley.edu"
         },
