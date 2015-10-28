@@ -120,6 +120,7 @@ media-placeLabel: Places
 media-localityLabel: Locality
 media-typesLabel: Types of media
 media-typeLabel: Types of media
+media-localityInformationLabel: Locality Information
 
 #cataloging
 collection-object-objectNumberLabel: Accession Number
