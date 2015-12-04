@@ -65,11 +65,11 @@ vocab-activity: Activities
 vocab-concept: Ethnographic Cultures
 vocab-ethusecode: Ethnographic File Codes
 vocab-archculture: Archaeological Cultures
-vocab-organization: PAHMA Organization Authority
-vocab-person: PAHMA Person Authority
-vocab-place: PAHMA Place Authority
-vocab-location: PAHMA Storage Locations
-vocab-taxon: PAHMA Taxon Authority
+vocab-organization: Local Organization Authority
+vocab-person: Local Person Authority
+vocab-place: Local Place Authority
+vocab-location: Local Storage Locations
+vocab-taxon: Local Taxon Authority
 vocab-crate: Crates
 vocab-objectname: Object Names
 
@@ -378,8 +378,8 @@ loanin-lendersAuthorizerLabel: Lender's authorizer
 loanin-lendersAuthorizationDateLabel: Authorization date
 loanin-loanReturnDateLabel: Loan return date
 loanin-loanReturnDateGroupLabel: Loan return date
-loanin-borrowersContactLabel: PAHMA contact
-loanin-borrowersAuthorizerLabel: PAHMA authorizer
+loanin-borrowersContactLabel: Local contact
+loanin-borrowersAuthorizerLabel: Local authorizer
 loanin-borrowersAuthorizationDateLabel: Authorization date
 loanin-loanInNoteLabel: Loan note
 loanin-loanPurposeLabel: Loan purpose
@@ -387,7 +387,7 @@ loanin-loanRenewalApplicationDateLabel: Loan renewal application date
 loanin-loanInDateLabel: Loan receipt date
 loanin-loanInDateGroupLabel: Loan receipt date
 loanin-loanInConditionsLabel: Loan conditions
-loanin-loanInContactLabel: PAHMA contact
+loanin-loanInContactLabel: Local contact
 loanin-updatedAtLabel: Modified date
 loanin-identificationNumberRequired: Please specify a loan number
 loanin-createdAtLabel: 
@@ -400,8 +400,8 @@ loanout-borrowersContactLabel: Borrower's contact
 loanout-borrowersAuthorizerLabel: Borrower's authorizer
 loanout-borrowersAuthorizationDateLabel: Authorization date
 loanout-specialConditionsOfLoanLabel: Loan conditions
-loanout-lendersAuthorizerLabel: PAHMA authorizer
-loanout-lendersContactLabel: PAHMA contact
+loanout-lendersAuthorizerLabel: Local authorizer
+loanout-lendersContactLabel: Local contact
 loanout-lendersAuthorizationDateLabel: Authorization date
 loanout-loanStatusLabel: Status
 loanout-loanStatusGroupLabel: Loan status
@@ -1033,7 +1033,7 @@ claim-claimTaskHeaderLabel: Task
 claim-claimTaskNotesHeaderLabel: Notes
 claim-dispositionPossibilitiesDiscussedLabel: Disposition possibilities discussed
 claim-surroundingTribesContactedLabel: Surrounding tribes contacted
-claim-workingTeamNotifiedLabel: PAHMA-NAGPRA team notified
+claim-workingTeamNotifiedLabel: NAGPRA team notified
 claim-siteFileResearchCompletedLabel: Site file research completed
 claim-accessionFileResearchCompletedLabel: Accession file research completed
 claim-objectsLocatedAndCountedLabel: Objects located and counted
