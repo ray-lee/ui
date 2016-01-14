@@ -252,7 +252,7 @@
               </excludes>
               <systemPropertyVariables>
                 <tenantName>botgarden</tenantName>
-                <user>admin@botgarden.cspace.berkeley.edu</user>
+                <user>admin@botgarden.collectionspace.org</user>
               </systemPropertyVariables>
               <reportsDirectory>target/failsafe-reports/botgarden</reportsDirectory>
               <summaryFile>target/failsafe-reports/botgarden/failsafe-summary.xml</summaryFile>
