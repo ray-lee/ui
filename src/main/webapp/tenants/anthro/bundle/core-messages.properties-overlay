@@ -1,6 +1,6 @@
 #Login
 #login-current: CollectionSpace 4.1: PAHMA prototype
-login-deployment: Version pahma_4.1-34
+login-deployment: Version pahma_4.1-43
 #login-current-info: Welcome to the prototype of PAHMA-CSpace, which is being configured to support the needs of anthropology museums in general, as well as the specific needs of the Phoebe A. Hearst Museum of Anthropology.
 #login-login-info: To view the CollectionSpace PAHMA tenant as an administrator, use the login box on the right with the login
 login-current: Current Release 4.1 Information
@@ -516,6 +516,7 @@ place-placeTypeLabel: Place type
 place-placeIdentifierLabel: Identifier
 place-placeNameGroupLabel: Place names
 preferredPlace-termDisplayNameLabel: Display name
+preferredPlace-termDisplayNameSearchEntryLabel: Display name
 preferredPlace-termNameLabel: Name
 preferredPlace-termQualifierLabel: Qualifier
 preferredPlace-termTypeLabel: Type
@@ -633,6 +634,8 @@ media-createdAtLabel: Created Date
 media-createdAtStartLabel: Earliest
 media-createdAtEndLabel: Latest
 media-subjectLabel: Subject(s)
+media-documentationImageLabel: Documentation image?
+media-documentationImageSearchLabel: Documentation image?
 
 # ******************* Intake (=Object Entry) ******************* #
 intake-objectEntryInformationLabel: Object Entry Information
@@ -822,6 +825,7 @@ collection-object-biologicalInformationLabel: Biological Information
 collection-object-contentInformationLabel: Content Depicted
 collection-object-contentDescriptionLabel: Description
 collection-object-contentOrganizationsLabel: Organization depicted
+collection-object-contentWorksLabel: Work depicted
 collection-object-contentPositionsLabel: Position
 collection-object-contentActivitiesLabel: Activity depicted
 collection-object-contentLanguagesLabel: Language
@@ -1137,40 +1141,24 @@ conditioncheck-objectRequirementInformationLabel: Object Requirement and Handlin
 conditioncheck-conditionCheckNoteLabel: Condition Note
 
 # Osteology
-osteology-recordList: Related Osteology Records
-osteology-number: Inventory ID
-osteology-editRecord: Edit Osteology Record
-osteology: Osteology
-osteology-tab: Osteo
-osteology-InventoryIDLabel: Inventory ID
-osteology-identificationNumberRequired: Please specify an Inventory ID
-osteology-NotesOnElementInventoryLabel: Notes on inventory
-osteology-osteoAgeEstimateGroupLabel: Age estimate
-osteology-osteoAgeEstimateVerbatimLabel: Age estimate verbatim
-osteology-osteoAgeEstimateLowerLabel: Lower estimate (in years)
-osteology-osteoAgeEstimateUpperLabel: Upper estimate (in years)
-osteoAgeEstimateGroup-osteoAgeEstimateDateGroupLabel: Date
-osteology-osteoAgeEstimateAnalystLabel: Analyst
-osteology-osteoAgeEstimateNoteLabel: Notes
-osteology-sexDeterminationGroupLabel: Sex determination
-osteology-sexDeterminationLabel: Sex
-sexDeterminationGroup-sexDeterminationDateGroupLabel: Date
-osteology-sexDeterminationAnalystLabel: Analyst
-osteology-sexDeterminationNoteLabel: Notes
-osteology-inventoryAnalystLabel: Analyst
-osteology-inventoryDateLabel: Date 
-osteology-inventoryDateStartLabel: Earliest
-osteology-inventoryDateEndLabel: Latest
-osteology-updatedByLabel: Record last modified by
-osteology-createdAtLabel: Created date
-osteology-createdAtStartLabel: Earliest
-osteology-createdAtEndLabel: Latest
-osteology-updatedAtLabel: Modified date
-osteology-updatedAtStartLabel: Earliest
-osteology-updatedAtEndLabel: Latest 
 osteology-Notes_DentalPathologyLabel: Dental pathology (incl. alveolar)
 osteology-Notes_CranialPathologyLabel: Cranial bony pathology
 osteology-Notes_PostcranialPathologyLabel: Postcranial bony pathology
 osteology-Notes_CulturalModificationsLabel: Cultural modifications
 osteology-Notes_NHTaphonomicAlterationsLabel: Nonhuman taphonomic alterations
 osteology-Notes_CuratorialSuffixingLabel: Curatorial suffixing notes
+osteology-culturalModificationInformationLabel: Cultural Modification Information
+osteology-cranialDeformationInformationLabel: Cranial Deformation Information
+osteology-trepanationInformationLabel: Trepanation Information
+osteology-cranialDeformationPresentLabel: Is any evidence of cranial deformation present?
+osteology-cranialDeformationCategoryLabel: General category
+osteology-cranialDeformationNoteLabel: Comments on cranial deformation
+osteology-trepanationPresentLabel: Is any evidence of trepanation present?
+osteology-trepanationLocationLabel: Location (bone and side)
+osteology-trepanationDimensionMaxLabel: Max. dimension (mm)
+osteology-trepanationDimensionMinLabel: Min. dimension (mm)
+osteology-trepanationTechniqueLabel: Technique
+osteology-trepanationHealingLabel: Healing
+osteology-trepanationCertaintyLabel: Certainty
+osteology-trepanationNoteLabel: Comments
+osteology-trepanationGeneralNoteLabel: Comments on trepanation
