@@ -747,8 +747,7 @@ cspace = cspace || {};
             }
             
             if (currentValue != oldValue) {
-                // Disable structured field caluculation for now.
-                // that.updateStructuredFields();
+              that.updateStructuredFields();
             }
         }, "updateStructuredFields-" + that.displayDateElPath);
     };
