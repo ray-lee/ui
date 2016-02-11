@@ -1,0 +1,65 @@
+#Login
+
+login-login: admin@lhmc.collectionspace.org
+login-rologin: reader@lhmc.collectionspace.org
+
+login-current-info-1: Welcome to the
+login-current-info-2: demo site, currently running version 
+login-current-info-3 of the software. This demo represents a draft of the Local History and Material Culture profile, with procedures and fields configured to support those collection types. To learn more about how you can contribute to the continued evolution of this profile, visit
+login-current-info-4: 
+
+login-footerFirst: A tenant configured for use with \t
+login-footerLink: life sciences collections
+login-footerLast:  is also available. In the future, additional demo tenants will be created to show configurations specific to art, digital and variable media, and anthropology.
+
+acquisition-accessionDateGroupLabel: Accessioned
+acquisition-acquisitionAuthorizerLabel: Accessioned by
+acquisition-acquisitionDateGroupLabel: Received Date
+acquisition-Label: Received by
+acquisition-acquisitionMethodLabel: Received as
+acquisition-acquisitionNoteLabel: Notes
+acquisition-acquisitionProvisosLabel: Restrictions
+acquisition-acquisitionReferenceNumberLabel: Accession #
+acquisition-ownerLabel: Source
+acquisition-creditLineLabel: Credit line
+acquisition-objectPurchasePriceValueLabel: Price or Value
+
+intake-currentOwnerLabel: Source
+intake-depositorsRequirementsLabel: Restrictions
+intake-entryDateLabel: Received date
+intake-entryMethodLabel: Received as
+intake-entryNoteLabel: Notes
+intake-returnDateLabel: Return by
+intake-insurancePolicyNumberLabel: Policy#
+intake-insuranceRenewalDateLabel: Policy Expiration Date
+intake-insurerLabel: Insurance Company
+intake-currentLocationLabel: Interim locations
+intake-locationDateLabel: Inventoried date
+intake-conditionCheckDateLabel: Condition date
+intake-conditionCheckNoteLabel: Condition notes
+intake-conditionCheckerOrAssessorLabel: Condition by
+
+person-termDisplayNameLabel: Full Name
+preferredPA-foreNameLabel: First Name
+preferredPA-surNameLabel: Last Name
+preferredPA-titleLabel: Title
+person-birthDateGroupLabel: Born
+person-deathDateGroupLabel: Died
+person-birthPlaceLabel: Where
+person-deathPlaceLabel: Where
+person-nationalityLabel: Nationality
+person-occupationLabel: Occupation sphere of activity
+person-bioNoteLabel: Notes
+contact-emailGroupLabel: E-mail
+contact-emailLabel: E-mail
+contact-faxNumberGroupLabel: Fax
+contact-faxNumberLabel: Number
+contact-webAddressGroupLabel: Website
+contact-webAddressLabel: Website
+contact-addressPlace1Label: Address
+contact-addressMunicipalityLabel: City
+contact-addressStateOrProvinceLabel: St
+contact-addressPostCodeLabel: Zip
+contact-addressCountyLabel: Country
+
+conditioncheck-techAssessmentGroupLabel: Mechanism Operation
