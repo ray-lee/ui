@@ -1,4 +1,4 @@
-©/*
+/*
 Copyright 2010 University of Toronto
 
 Licensed under the Educational Community License (ECL), Version 2.0. 

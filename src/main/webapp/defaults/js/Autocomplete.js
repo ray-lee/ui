@@ -268,8 +268,6 @@ https://source.collectionspace.org/collection-space/LICENSE.txt
 		
         that.initializeMiniView();		
 
-        that.initializeMiniView();
-
         // TODO: risk of asynchrony
         authUrl = that.authoritiesSource.resolveUrl();
         that.authoritiesSource.get(null, function (authorities) {

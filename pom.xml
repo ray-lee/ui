@@ -242,60 +242,6 @@
             </executions>
         </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-failsafe-plugin</artifactId>
-        <version>2.16</version>
-        <executions>
-          <!-- 
-          <execution>
-            <id>integration-test-core</id>
-            <goals>
-              <goal>integration-test</goal>
-            </goals>
-            <configuration>
-              <excludes>
-                <exclude>**/TaxonIT.java</exclude>
-              </excludes>
-              <systemPropertyVariables>
-                <tenantName>core</tenantName>
-                <user>admin@core.collectionspace.org</user>
-              </systemPropertyVariables>
-              <reportsDirectory>target/failsafe-reports/core</reportsDirectory>
-              <summaryFile>target/failsafe-reports/core/failsafe-summary.xml</summaryFile>
-            </configuration>
-          </execution>
-          <execution>
-            <id>integration-test-lifesci</id>
-            <goals>
-              <goal>integration-test</goal>
-            </goals>
-            <configuration>
-              <systemPropertyVariables>
-                <tenantName>lifesci</tenantName>
-                <user>admin@lifesci.collectionspace.org</user>
-              </systemPropertyVariables>
-              <reportsDirectory>target/failsafe-reports/lifesci</reportsDirectory>
-              <summaryFile>target/failsafe-reports/lifesci/failsafe-summary.xml</summaryFile>
-            </configuration>
-          </execution>
-          -->
-          <execution>
-            <id>verify</id>
-            <goals>
-              <goal>verify</goal>
-            </goals>
-            <configuration>
-              <summaryFiles>
-                <!-- 
-                <summaryFile>target/failsafe-reports/core/failsafe-summary.xml</summaryFile>
-                <summaryFile>target/failsafe-reports/lifesci/failsafe-summary.xml</summaryFile>
-                -->
-              </summaryFiles>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <!-- cargo plugin -->
         <groupId>org.codehaus.cargo</groupId>
         <artifactId>cargo-maven2-plugin</artifactId>

@@ -1689,7 +1689,7 @@ https://source.collectionspace.org/collection-space/LICENSE.txt
             funcName: "cspace.search.searchView.search",
             args: ["{arguments}.0", "{searchView}"]
         });
-
+        
         fluid.demands("cspace.search.searchView.search", ["cspace.search.searchView", "cspace.advancedSearch"], {
             funcName: "cspace.search.searchView.advancedSearch",
             args: ["{arguments}.0", "{searchView}"]
