@@ -119,7 +119,7 @@ cspace = cspace || {};
             that.refreshView();
         }
         that.dom.locate("searchQuery").focus();
-    };
+	};
 
     cspace.searchBox.preInit = function (that) {
         that.afterRenderHandler = function () {
@@ -146,6 +146,13 @@ cspace = cspace || {};
             }
             vocabs = vocab.authority[model.recordType].order.vocabs;
             if (!vocabs) {
+                that.applier.requestChange("vocabs", undefined);
+                return;
+            }
+            vocabs = vocabs.filter(function (vocab) {
+                return !!(that.vocab.authority[model.recordType].workflowState.vocabs[vocab]);
+            });
+            if (vocabs.length == 0) {
                 that.applier.requestChange("vocabs", undefined);
                 return;
             }

@@ -268,8 +268,8 @@ fluid.registerNamespace("cspace.util");
 
     var eUC = "encodeURIComponent:";
 
-    var URLDataSourceCache = {};
-
+	var URLDataSourceCache = {};
+		
     /** A "Data Source" attached to a URL. Reduces HTTP transport to the simple 
      * "Data Source" API. This should become the only form of AJAX throughout CollectionSpace,
      * with the exception of calls routed through fluid.fetchResources (the two methods may
@@ -320,7 +320,7 @@ fluid.registerNamespace("cspace.util");
                     }
                     if (that.options.caching) {
                         URLDataSourceCache[togo.url] = data;
-                    }
+                    }					
                     callback(data);
                 },
                 error: function (xhr, textStatus, errorThrown) {
@@ -850,7 +850,7 @@ fluid.registerNamespace("cspace.util");
             return "";
         }
         return urn.slice(urn.indexOf("'") + 1, urn.length - 1);
-    };
+	};
 
     cspace.util.urnToCSID = function (urn) {
         if (!urn) {
@@ -896,7 +896,7 @@ fluid.registerNamespace("cspace.util");
 
         return csid;
     }
-
+	
     fluid.defaults("cspace.util.urnToStringFieldConverter", {
         gradeNames: ["fluid.viewComponent"],
         convert: cspace.util.urnToString
@@ -1441,8 +1441,8 @@ fluid.registerNamespace("cspace.util");
             }
 
             return authority;
-        };
-
+        };		
+		
         that.isDefault = function (vocab) {
             return !!fluid.get(that.list, vocab);
         };
@@ -1471,6 +1471,7 @@ fluid.registerNamespace("cspace.util");
         fluid.each(that.authorities, function (authority) {
             that.authority[authority] = {
                 nptAllowed: {},
+                workflowState: {},
                 order: {}
             };
             Object.defineProperty(that.authority[authority], "vocabs", {
@@ -1485,6 +1486,14 @@ fluid.registerNamespace("cspace.util");
                 get: function () {
                     return fluid.transform(fluid.get(that.list, authority), function (val) {
                         return val.nptAllowed;
+                    });
+                },
+                enumerable : true
+            });
+            Object.defineProperty(that.authority[authority].workflowState, "vocabs", {
+                get: function () {
+                    return fluid.transform(fluid.get(that.list, authority), function (val) {
+                        return val.workflowState;
                     });
                 },
                 enumerable : true
@@ -1868,19 +1877,37 @@ fluid.registerNamespace("cspace.util");
     };
     
     cspace.util.processReadOnly = function (container, readOnly, neverReadOnly) {
-        fluid.each(["input", "select", "textarea"], function (tag) {
-            container.find(tag).prop("disabled", function (index, oldPropertyValue) {
-                // if oldPropertyValue is "disabled" or true: leave it unchanged.
-                return oldPropertyValue || readOnly;
+        var elementsToIgnore = [];
+        
+        fluid.each(neverReadOnly, function (selector) {
+            container.find(selector).each(function() {
+                elementsToIgnore.push(this);
             });
         });
-
-        container.find("div.richtext").prop("contenteditable", !readOnly);
-
-        // Now lets enable back selectors which should not be disabled
-        fluid.each(neverReadOnly, function (selector) {
-            container.find(selector).removeAttr('disabled');
+        
+        fluid.each(["input", "select", "textarea"], function (tag) {
+            container.find(tag)
+                .filter(function() {
+                    var candidate = this;
+                    
+                    if (elementsToIgnore.indexOf(candidate) == -1) {
+                        return true;
+                    }
+                    
+                    return false;
+                })
+                .prop("disabled", function (index, oldPropertyValue) {
+                    // if oldPropertyValue is "disabled" or true: leave it unchanged.
+                    return oldPropertyValue || readOnly;
+                });
         });
+		
+		container.find("div.richtext").prop("contenteditable", !readOnly);
+		
+        // Now lets enable back selectors which should not be disabled
+        // fluid.each(neverReadOnly, function (selector) {
+        //     container.find(selector).removeAttr('disabled');
+        // });
     };
     
     cspace.util.composeSegments = function (root, path) {
@@ -1893,35 +1920,90 @@ fluid.registerNamespace("cspace.util");
         gradeNames: ["autoInit", "fluid.eventedComponent"]
     });
 
+    cspace.util.isReplicatedState = function (workflowState) {
+      return workflowState && (workflowState.indexOf("replicated") > -1);
+    };
+
+    cspace.util.resolveReplicated = function (model) {
+        // Checking whether workflow is present in model.fields or model.
+        var workflow = fluid.get(model, "fields.workflow") || fluid.get(model, "workflow");
+        return cspace.util.isReplicatedState(workflow);
+    };
+
+    cspace.util.isDeprecatedState = function (workflowState) {
+      return workflowState && (workflowState.indexOf("deprecated") > -1);
+    };
+
+    cspace.util.resolveDeprecated = function (model) {
+        // Checking whether workflow is present in model.fields or model.
+        var workflow = fluid.get(model, "fields.workflow") || fluid.get(model, "workflow");
+        return cspace.util.isDeprecatedState(workflow);
+    };
+
+    cspace.util.isLockedState = function (workflowState) {
+      return workflowState && (workflowState === "locked");
+    };
+
     cspace.util.resolveLocked = function (model) {
         // Checking whether workflow is present in model.fields or model.
         var workflow = fluid.get(model, "fields.workflow") || fluid.get(model, "workflow");
-        return workflow && workflow === "locked";
+        return cspace.util.isLockedState(workflow);
     };
 
     cspace.util.isReadOnly = function (readOnly, model) {
-        return readOnly || cspace.util.resolveLocked(model);
+        return readOnly || cspace.util.resolveLocked(model) || cspace.util.resolveReplicated(model) || cspace.util.resolveDeprecated(model);
     };
 
     fluid.defaults("cspace.util.recordLock", {
         gradeNames: ["autoInit", "fluid.viewComponent"],
         styles: {
-            locked: "cs-locked"
+            locked: "cs-locked",
+            replicated: "cs-replicated",
+            deprecated: "cs-deprecated"
         },
         finalInitFunction: "cspace.util.recordLock.finalInit"
     });
 
     cspace.util.recordLock.finalInit = function (that) {
         function processWorkflow (model) {
-            if (!cspace.util.resolveLocked(model)) {
-                return;
+            if (cspace.util.resolveLocked(model)) {
+                that.container.addClass(that.options.styles.locked);
             }
-            that.container.addClass(that.options.styles.locked);
+            if (cspace.util.resolveReplicated(model)) {
+                that.container.addClass(that.options.styles.replicated);
+            }
+            if (cspace.util.resolveDeprecated(model)) {
+                that.container.addClass(that.options.styles.deprecated);
+            }
         }
         that.applier.modelChanged.addListener("fields.workflow", function (model) {
              processWorkflow(model);
         });
         processWorkflow(that.model);
+    };
+
+    fluid.defaults("cspace.util.workflowToStyleFieldConverter", {
+        gradeNames: ["fluid.viewComponent"]
+    });
+
+    cspace.util.workflowToStyleFieldConverter = function (container, options) {
+        var that = fluid.initView("cspace.util.workflowToStyleFieldConverter", container, options);
+        var func = that.container.val() ? "val" : "text";
+        var value = that.container[func]();
+        
+        if (cspace.util.isLockedState(value)) {
+            that.container.addClass("cs-locked");
+        }
+        if (cspace.util.isReplicatedState(value)) {
+            that.container.addClass("cs-replicated");
+        }
+        if (cspace.util.isDeprecatedState(value)) {
+            that.container.addClass("cs-deprecated");
+        }
+        
+        that.container[func]("");
+        
+        return that;
     };
 
     fluid.defaults("cspace.util.workflowStyler", {

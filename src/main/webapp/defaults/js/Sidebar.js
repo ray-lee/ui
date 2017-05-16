@@ -39,7 +39,7 @@ cspace = cspace || {};
             header: ".csc-sidebar-header",
             togglable: ".csc-sidebar-togglable",
             report: ".csc-sidebar-report",
-            batch: ".csc-sidebar-batch"
+            batch: ".csc-sidebar-batch"			
         },
         // Render immediately
         renderOnInit: true,

@@ -1,4 +1,4 @@
-/*
+©/*
 Copyright 2010 University of Toronto
 
 Licensed under the Educational Community License (ECL), Version 2.0. 
@@ -353,7 +353,7 @@ cspace = cspace || {};
     
     // Rerendering repeatable and set the new primary
     cspace.repeatableImpl.updateAndRefresh = function (that, callback, event, render, index) {
-        that.events.onUpdateModel.fire();
+		that.events.onUpdateModel.fire();
         that.requestChange(callback, index);
         if (render) {
             that.events.onRefreshView.fire();

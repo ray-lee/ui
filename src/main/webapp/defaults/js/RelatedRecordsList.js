@@ -238,7 +238,7 @@ cspace = cspace || {};
         };
         that.primaryRecordCreatedHandler = function () {
             that.listBanner.events.showBanner.fire(true);
-        };
+		};
     };
 
     cspace.relatedRecordsList.finalInit = function (that) {

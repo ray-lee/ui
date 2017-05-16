@@ -81,24 +81,24 @@ cspace = cspace || {};
 
             if (jQuery.contains(document, that.container[0])) {
                 // If there is no data
-                if (!data) {
-                    that.displayErrorMessage(fluid.stringTemplate(that.options.parentBundle.resolve("emptyResponse"), {
-                        url: termListUrl
-                    }));
-                    return;
-                }
-                // If there is an error during fetching
-                if (data.isError === true) {
-                    fluid.each(data.messages, function (message) {
-                        that.displayErrorMessage(message);
-                    });
-                    return;
-                }
-                that.optionnames = data.optionnames;
-                that.optionlist = data.optionlist;
-                that.activestatus = data.activestatus;
-                that.events.afterFetch.fire();
-            }
+				if (!data) {
+					that.displayErrorMessage(fluid.stringTemplate(that.options.parentBundle.resolve("emptyResponse"), {
+						url: termListUrl
+					}));
+					return;
+				}
+				// If there is an error during fetching
+				if (data.isError === true) {
+					fluid.each(data.messages, function (message) {
+						that.displayErrorMessage(message);
+					});
+					return;
+				}
+				that.optionnames = data.optionnames;
+				that.optionlist = data.optionlist;
+				that.activestatus = data.activestatus;
+				that.events.afterFetch.fire();
+			}
         }, cspace.util.provideErrorCallback(that, termListUrl, "errorFetching"));
     };
 

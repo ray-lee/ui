@@ -127,7 +127,6 @@ cspace = cspace || {};
                     });
                     return;
                 }
-
                 var targetRecordTypes = {};
                 
                 fluid.each(data.items, function(item) {

@@ -163,7 +163,7 @@ cspace = cspace || {};
 
     cspace.structuredDate.showPopup = function (that) {
         that.popup.show();
-    };
+	};
     
     cspace.structuredDate.postInitFunction = function (that) {
         that.container.addClass(that.options.styles.structuredDate);
@@ -241,7 +241,7 @@ cspace = cspace || {};
             dateLatestQualifierUnit: ".csc-structuredDate-dateLatestQualifierUnit",
             dateLatestScalarValue: ".csc-structuredDate-dateLatestScalarValue",
             parseStatus: ".csc-structuredDate-parseStatus"
-        },
+		},
         strings: {},
         stringPaths: {
             close: "structuredDate-close",
@@ -306,7 +306,7 @@ cspace = cspace || {};
             hide: {
                 funcName: "cspace.structuredDate.popup.hide",
                 args: "{popup}"
-            }
+			}
         },
         defaultFormat: "yyyy-MM-dd",
         displayScalars: false,
@@ -325,7 +325,7 @@ cspace = cspace || {};
             }
         },
         dateParserURL: cspace.componentUrlBuilder("%tenant/%tname/parseDate?displayDate=%displayDate")
-    });
+	});
     
     fluid.demands("cspace.structuredDate.dateParserDataSource", "cspace.structuredDate.popup", {
         funcName: "cspace.URLDataSource",
@@ -337,7 +337,7 @@ cspace = cspace || {};
             targetTypeName: "cspace.structuredDate.dateParserDataSource"
         }
     });
-    
+    	
     var validate = function (value, field) {
         var parsed = parseInt(value, 10),
             month = arguments[2],
@@ -410,7 +410,7 @@ cspace = cspace || {};
     cspace.structuredDate.popup.hide = function (that) {
         that.container.hide();
     };
-    
+	
     cspace.structuredDate.popup.updateScalarValues = function (model, changeRequest, popup) {
         if (!popup) {
             return;
@@ -526,6 +526,77 @@ cspace = cspace || {};
         }
     };
     
+    cspace.structuredDate.popup.updateStructuredFields = function (that) {
+        var displayDateFullElPath = that.composeElPath("dateDisplayDate");
+        var displayDate = fluid.get(that.model, displayDateFullElPath);
+
+        if ($.trim(displayDate) == "") {
+            // If the display date was cleared, reset the structured fields.
+            
+            that.applier.requestChange(that.composeRootElPath(), {
+                dateDisplayDate: displayDate
+            });
+            
+            that.parseStatus.isError = false;
+            that.parseStatus.message = "";
+            that.parseStatus.messageDetail = "";
+            
+            // Refresh the view. If the popup has focus, just calling
+            // that.refreshView() causes the popup to move and
+            // cover the container input, so call show() instead,
+            // which will also calculate the correct position.
+            that.show();
+        }
+        else {
+            // Make a call to the app layer to parse the display date.
+            
+            var directModel = {
+                displayDate: displayDate
+            };
+        
+            that.dateParserDataSource.get(directModel, function(data) {
+                if (data.isError) {
+                    that.parseStatus.isError = true;
+
+                    if (data.messages) {
+                        console.log(data.messages.join(": "));
+
+                        that.parseStatus.message = data.messages[0];
+                        that.parseStatus.messageDetail = data.messages[1];
+                    }
+                    else {
+                        console.log("Unknown parse error");
+                    }
+                }
+                else {
+                    that.parseStatus.isError = false;
+                    that.parseStatus.message = "";
+                    that.parseStatus.messageDetail = "";
+                }
+
+                if (!data.structuredDate) {
+                    data.structuredDate = {
+                        dateDisplayDate: displayDate
+                    };
+                }
+
+                var primary = fluid.get(that.model, cspace.util.composeSegments(that.composeRootElPath(), "_primary"));
+                
+                if (typeof(primary) != "undefined") {
+                    data.structuredDate["_primary"] = primary;
+                }
+                
+                that.applier.requestChange(that.composeRootElPath(), data.structuredDate);
+                
+                // Refresh the view. If the popup has focus, just calling
+                // that.refreshView() causes the popup to move and
+                // cover the container input, so call show() instead,
+                // which will also calculate the correct position.
+                that.show();
+            });
+        }
+    };
+	
     cspace.structuredDate.popup.composeRootElPath = function (elPaths, root) {
         var path = fluid.find(elPaths, function(elPath) {
             var segs = elPath.split(".");
@@ -724,13 +795,13 @@ cspace = cspace || {};
     cspace.structuredDate.popup.finalInitFunction = function (that) {
         that.rootElPath = that.composeRootElPath();
         that.displayDateElPath = that.composeElPath("dateDisplayDate");
-        
+		
         that.options.protoTree = fluid.invokeGlobalFunction(that.options.getProtoTree, [that]);
         var scalarValuesComputedPath = that.composeElPath("scalarValuesComputed");
         if (scalarValuesComputedPath && fluid.get(that.model, scalarValuesComputedPath)) {
             that.applier.modelChanged.addListener(that.rootElPath, that.updateScalarValues, "updateScalarValues-" + that.rootElPath);
         }
-        
+		
         that.applier.modelChanged.addListener(that.displayDateElPath, function (model, oldModel) {
             var oldValue = fluid.get(oldModel, that.displayDateElPath);
             
@@ -750,6 +821,7 @@ cspace = cspace || {};
                 that.updateStructuredFields();
             }
         }, "updateStructuredFields-" + that.displayDateElPath);
+		
     };
     
     cspace.structuredDate.popup.preInit = function (that) {
@@ -786,6 +858,27 @@ cspace = cspace || {};
         return that;
     }
 
+    fluid.defaults("cspace.structuredDate.popup.parseStatus", {
+        gradeNames: ["fluid.viewComponent"]
+    });
+    
+    cspace.structuredDate.popup.parseStatus = function (container, options) {
+        var that = fluid.initView("cspace.structuredDate.popup.parseStatus", container, options);
+        
+        if (that.model.isError) {
+            that.container.addClass("error");
+            that.container.text(that.options.messageResolver.resolve("structuredDate-parseErrorMessage", [that.model.message, that.model.messageDetail]));
+            that.container.show();
+        }
+        else {
+            that.container.removeClass("error");
+            that.container.text("");
+            that.container.hide();
+        }
+        
+        return that;
+    }
+	
     // Fetching / Caching
     // ----------------------------------------------------
     
